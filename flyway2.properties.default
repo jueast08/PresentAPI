@@ -1,0 +1,6 @@
+flyway.url=jdbc:sqlite:present.db
+flyway.user=root
+flyway.password=password
+flyway.schemas=schema1,schema2,schema3
+flyway.placeholders.keyABC=valueXYZ
+flyway.placeholders.otherplaceholder=value123
