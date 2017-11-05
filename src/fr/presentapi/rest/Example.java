@@ -21,16 +21,14 @@ public class Example {
 		return Response.status(200).entity(jsonObject.toString()).build();
 	  }
 
-	  @Path("{f}")
+	  @Path("{your_name}")
 	  @GET
 	  @Produces("application/json")
-	  public Response examplePathParam(@PathParam("f") float f) throws JSONException {
+	  public Response examplePathParam(@PathParam("your_name") String name) throws JSONException {
 
 		JSONObject jsonObject = new JSONObject();
-		float celsius;
-		celsius =  (f - 32)*5/9; 
-		jsonObject.put("F Value", f); 
-		jsonObject.put("C Value", celsius);
+		jsonObject.put(name, "Baddass");
+		jsonObject.put("you", "are the best");
 
 		return Response.status(200).entity(jsonObject.toString()).build();
 	  }
