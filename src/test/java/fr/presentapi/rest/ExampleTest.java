@@ -1,8 +1,7 @@
-package test.java;
+package test.java.fr.presentapi.rest;
 
 import static org.junit.Assert.*;
 
-import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
@@ -28,8 +27,8 @@ public class ExampleTest extends JerseyTest{
         expectedResult.put("Julian", "Baddass");
         expectedResult.put("Easterly", "is the best");
         
-        assertEquals(response.getStatus(), 200);
-        assertEquals(response.readEntity(String.class), expectedResult.toString());
+        assertEquals(200,response.getStatus());
+        assertEquals(expectedResult.toString(),response.readEntity(String.class));
     }
     
     @Test
@@ -41,8 +40,8 @@ public class ExampleTest extends JerseyTest{
         expectedResult.put(name, "Baddass");
         expectedResult.put("you", "are the best");
         
-        assertEquals(response.getStatus(), 200);
-        assertEquals(response.readEntity(String.class), expectedResult.toString());
+        assertEquals(200, response.getStatus());
+        assertEquals(expectedResult.toString(), response.readEntity(String.class));
     }
 
 }
