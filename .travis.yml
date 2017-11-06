@@ -1,0 +1,8 @@
+language: java
+
+branches:
+  only:
+    - master
+    - develop
+
+script: mvn clean install verify test sonar:sonar
