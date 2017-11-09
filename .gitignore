@@ -54,6 +54,10 @@ local.properties
 .scala_dependencies
 .worksheet
 
+# Netbeans IDE specific
+nb-configuration.xml
+WebContent/META-INF/context.xml
+
 # Compiled class file
 *.class
 
