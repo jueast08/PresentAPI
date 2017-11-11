@@ -10,25 +10,25 @@ import org.json.JSONObject;
 @Path("/example")
 public class Example {
 
-	  @GET
-	  @Produces("application/json")
-	  public Response example() {
+    @GET
+    @Produces("application/json")
+    public Response example() {
 
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("Julian", "Baddass");
-		jsonObject.put("Easterly", "is the best");
-		return Response.status(200).entity(jsonObject.toString()).build();
-	  }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Julian", "Baddass");
+        jsonObject.put("Easterly", "is the best");
+        return Response.status(200).entity(jsonObject.toString()).build();
+    }
 
-	  @Path("{your_name}")
-	  @GET
-	  @Produces("application/json")
-	  public Response examplePathParam(@PathParam("your_name") String name) {
+    @Path("{your_name}")
+    @GET
+    @Produces("application/json")
+    public Response examplePathParam(@PathParam("your_name") String name) {
 
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put(name, "Baddass");
-		jsonObject.put("you", "are the best");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(name, "Baddass");
+        jsonObject.put("you", "are the best");
 
-		return Response.status(200).entity(jsonObject.toString()).build();
-	  }
+        return Response.status(200).entity(jsonObject.toString()).build();
+    }
 }
