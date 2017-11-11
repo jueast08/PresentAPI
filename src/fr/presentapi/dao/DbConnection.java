@@ -5,16 +5,32 @@
  */
 package fr.presentapi.dao;
 
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  *
  * @author Coline
  */
 public class DbConnection {
-    /* ce qu'il faut faire exactement : 
-    class static, singleton(ne peut etre instancié une seule fois 
-    get_connecte qui renvoie l'objet existant ou qui le creer grace au cosntucteur privé
-    constructeur privé 
-    _conn
-    voir shema
-    */
+
+    private Connection _conn;
+
+    private DbConnection() {
+        try {
+            _conn = DriverManager.getConnection("jdbc:sqlite:present.db");
+        } catch (SQLException ex) {
+            System.err.println("Erreur: " + ex.getMessage());
+            System.exit(1);
+        }
+    }
+    private static DbConnection instance = null;
+
+    public static DbConnection getConnection() {
+        if (instance == null) {
+            instance = new DbConnection();
+        }
+        return instance;
+    }
 }
