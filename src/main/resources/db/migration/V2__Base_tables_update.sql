@@ -43,8 +43,8 @@ CREATE TABLE Course(
  */
 CREATE TABLE Code(
     code VARCHAR(255),
-    creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    durationSec TIMESTAMP NOT NULL DEFAULT 600, /* Default to 10min */
+    creationDate TIMESTAMP CHECK(creationDate <= CURRENT_TIMESTAMP) DEFAULT CURRENT_TIMESTAMP,
+    durationSec TIMESTAMP NOT NULL CHECK(durationSec > 0) DEFAULT 300, /* Default to 5min */
     courseId VARCHAR(255),
 
     PRIMARY KEY(code, creationDate),
@@ -59,10 +59,30 @@ CREATE TABLE Present(
     code VARCHAR(255),
     creationDate TIMESTAMP,
     courseId VARCHAR(255),
-    timestamp VARCHAR(255) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    timestamp VARCHAR(255) NOT NULL CHECK(timestamp <= CURRENT_TIMESTAMP) DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY(userId, code, creationDate),
     FOREIGN KEY(userId) REFERENCES Users(userId),
     FOREIGN KEY(code, creationDate) REFERENCES Code(code, creationDate)
 );
 
+
+
+/*
+ * Triggers (sqlite)
+ */
+ CREATE TRIGGER Trigg_DeleteStudent
+AFTER DELETE ON Student
+FOR EACH ROW
+BEGIN
+    DELETE FROM Users WHERE userId = old.userId;
+END;
+CREATE TRIGGER Trigg_DeleteProfessor
+AFTER DELETE ON Professor
+FOR EACH ROW
+BEGIN
+    DELETE FROM Users WHERE userId = old.userId;
+END;
+
+/* TODO: delete course removes all codes(Code) linked to it and presence(Present) linked to it */
+/* TODO: deleting a code removes all presence(Present) */
