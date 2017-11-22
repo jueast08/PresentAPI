@@ -26,6 +26,16 @@ public final class CSVParser implements Iterator{
 		_buffer = null;
 	}
 
+	public void close(){
+		if(_buffer != null){
+			try{
+				_buffer.close();
+			} catch(IOException ex){
+				System.err.println("Error closing file");
+			}
+		}
+	}
+
 	@Override
 	public boolean hasNext(){
 		try{
@@ -34,6 +44,10 @@ public final class CSVParser implements Iterator{
 			}
 			if(_buffer.ready()){
 				return true;
+			}
+			else{
+				_buffer.close();
+				_buffer = null;
 			}
 		}
 		catch(FileNotFoundException e){
