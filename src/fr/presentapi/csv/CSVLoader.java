@@ -5,7 +5,7 @@
  * @version 0.0.1 - Last modified: 20/11/17
  */
 
-package fr.presentapi.dao;
+package fr.presentapi.csv;
 
 
 public abstract class CSVLoader{

@@ -7,7 +7,7 @@
 
 package test.java.fr.presentapi.rest;
 
-import fr.presentapi.dao.CSVParser;
+import fr.presentapi.csv.CSVParser;
 import java.util.Arrays;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;

@@ -4,18 +4,15 @@
  *
  * @version 0.0.1 - Last modified: 20/11/17
  */
+package fr.presentapi.csv;
 
-package fr.presentapi.dao;
-
-public class StudentLoader extends CSVLoader{
-	private StudentModel _studentsModel;
-
-	public StudentLoader(String filepath){
+public class ProfLoader extends CSVLoader{
+	public ProfLoader(String filepath){
 		super(filepath);
-		_studentsModel = new StudentModel();
 	}
 
 	@Override
 	public void load(){
 	}
+	
 }
