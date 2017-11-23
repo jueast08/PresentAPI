@@ -7,8 +7,15 @@
 package fr.presentapi.dao;
 
 public class UsersDAO {
+    private  DbConnection connexion;
     
     boolean insertUsers(Users users) {
+        
+        String cmd = "INSERT INTO Users (numEtu,salt,statusId) VALUES"
+                    + "(" + users.getNumEtu()+ ","
+                    + users.getSalt() + "," +
+                    + users.getStatusId() +")" ;
+         
         return true;
     }
     
