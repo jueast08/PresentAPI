@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Quentin Debroise <debroise@ecole.ensicaen.fr>
+ * @author Coline Smagghe <smagghe@ecole.ensicaen.fr>
+ *
+ * @version 0.0.1 - Last modified: 23/11/17
  */
 package test.java.fr.presentapi.dao;
 
-/**
- *
- * @author Coline
- */
 public class ConnectionTest {
     
 }
