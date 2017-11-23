@@ -13,7 +13,7 @@ import java.sql.SQLException;
  *
  * @author Coline
  */
-public class DbConnection {
+public final class DbConnection {
 
     private Connection _conn;
 
@@ -27,7 +27,7 @@ public class DbConnection {
     }
     private static DbConnection instance = null;
 
-    public static DbConnection getConnection() {
+    public static synchronized DbConnection getConnection() {
         if (instance == null) {
             instance = new DbConnection();
         }
