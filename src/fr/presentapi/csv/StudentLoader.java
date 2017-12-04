@@ -14,5 +14,11 @@ public class StudentLoader extends CSVLoader{
 
 	@Override
 	public void load(){
+		while(getParser().hasNext()){
+			_insert(getParser().next());
+		}
+	}
+
+	public void _insert(String[] data){
 	}
 }
