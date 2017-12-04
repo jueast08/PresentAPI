@@ -6,8 +6,15 @@
  */
 package fr.presentapi.dao;
 
+import java.sql.Connection;
+
 public class UsersDAO {
-    private  DbConnection connexion;
+    
+    private /*final*/ Connection _connexion;
+    
+    public UsersDAO(){
+		_connexion = DbConnection.getConnection();
+    }
     
     boolean insertUsers(Users users) {
         
