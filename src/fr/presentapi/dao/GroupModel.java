@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class GroupModel{
+public class GroupModel{
 	private static final String TABLE = "Groups";
 
 	private final Connection _conn;
@@ -42,7 +42,7 @@ public final class GroupModel{
 
 			_conn.commit();
 		} catch(SQLException e){
-			System.err.println("SQLException");
+			System.err.println("SQLException: ");
 			success = false;
 		}
 
@@ -58,20 +58,17 @@ public final class GroupModel{
 			PreparedStatement stmt = _conn.prepareStatement(query);
 			stmt.setLong(1, id);
 			res = stmt.executeQuery();
-			System.out.println(query);
 			if(!res.next()){
-				System.out.println("No results");
 				return null;
 			}
 			g = new Group(id, res.getString("label"));
-			// res.close();
+			res.close();
 		}
 		catch(SQLException e){
 			System.err.println("SQLException: " + e);
 			return null;
 		}
-		
-		System.out.println("Hey!");
+
 		return g;
 	}
 }
