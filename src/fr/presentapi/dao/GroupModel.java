@@ -13,7 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class GroupModel{
-	private static final String TABLE = "Groups";
+	public static final String TABLE = "Groups";
+	public static final String[] FIELDS = {"groupId", "name"};
 
 	private final Connection _conn;
 
@@ -37,12 +38,12 @@ public class GroupModel{
 			stmt.setString(1, group.getLabel());
 			if(!stmt.execute()){
 				System.err.println("Error executing query: " + query);
-				return false;
+				success = false;
 			}
 
 			_conn.commit();
 		} catch(SQLException e){
-			System.err.println("SQLException: ");
+			System.err.println("SQLException: " + e);
 			success = false;
 		}
 
