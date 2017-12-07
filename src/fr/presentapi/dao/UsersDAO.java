@@ -50,23 +50,13 @@ public class UsersDAO {
         return success;
     }
     
-    boolean updateUsers(Users users) {
+    boolean deleteUsers(Users users) {
         boolean success = true;
-        String query = "INSERT INTO " + TABLE;
-
-        if (users.getStatusId() != Users.DEFAULT_ID) {
-            query += " VALUES(?, ?, ?)";
-        } else {
-            query += "VALUES(?,?)";
-        }
+        String query = "DELETE FROM " + TABLE + "WHERE numEtu = ";
 
         try {
             PreparedStatement stmt = _connexion.prepareStatement(query);
             stmt.setString(1, String.valueOf(users.getNumEtu()));
-            stmt.setString(2, users.getSalt());
-            if (users.getStatusId() != Users.DEFAULT_ID) {
-                stmt.setString(3, String.valueOf(users.getStatusId()));
-            }
             if (!stmt.execute()) {
                 System.err.println("Error executing query: " + query);
                 return false;
@@ -80,10 +70,4 @@ public class UsersDAO {
 
         return success;
     }
-    
-    boolean deleteUsers(Users users) {
-        return true;
-    }
-    
-    
 }
