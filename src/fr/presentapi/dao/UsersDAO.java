@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class UsersDAO {
-    private static final String TABLE = "Users";
+    public static final String TABLE = "Users";
     
     private final Connection _connexion;
     
@@ -21,21 +21,19 @@ public class UsersDAO {
         
     public boolean insertUsers(Users users) {
         boolean success = true;
-        String query = "INSERT INTO " + TABLE;
-
-        if (users.getStatusId() != Users.DEFAULT_ID) {
-            query += " VALUES(?, ?, ?)";
-        } else {
-            query += "VALUES(?,?)";
-        }
+        String query = "INSERT INTO " + TABLE +
+			"(numEtu, firstname, lastname, mail, salt, statusId) " + 
+			"VALUES(?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement stmt = _connexion.prepareStatement(query);
             stmt.setString(1, String.valueOf(users.getNumEtu()));
-            stmt.setString(2, users.getSalt());
-            if (users.getStatusId() != Users.DEFAULT_ID) {
-                stmt.setString(3, String.valueOf(users.getStatusId()));
-            }
+			stmt.setString(2, users.getFName());
+			stmt.setString(3, users.getLName());
+            stmt.setString(4, users.getMail());
+            stmt.setString(5, users.getSalt());
+            stmt.setLong(6, users.getStatusId());
+
             if (!stmt.execute()) {
                 System.err.println("Error executing query: " + query);
                 return false;
