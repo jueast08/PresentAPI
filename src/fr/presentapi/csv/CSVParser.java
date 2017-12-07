@@ -13,17 +13,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class CSVParser implements Iterator{
-	private final static String SEPARATOR = ";";
-	private String _filepath;
+	private final static String DEFAULT_SEPARATOR = ";";
+	private final String _separator;
+	private final String _filepath;
 	private BufferedReader _buffer;
 
-	public CSVParser(String filepath){
+	public CSVParser(String filepath, String separator){
 		_filepath = filepath;
+		_separator = separator;
 		_buffer = null;
+	}
+
+	public CSVParser(String filepath){
+		this(filepath, DEFAULT_SEPARATOR);
 	}
 
 	public void close(){
@@ -74,7 +78,7 @@ public final class CSVParser implements Iterator{
 				throw new NoSuchElementException();
 			}
 
-			return line.split(SEPARATOR);
+			return line.split(_separator);
 		}
 		catch(FileNotFoundException e){
 			System.err.println("Can't load " + _filepath);

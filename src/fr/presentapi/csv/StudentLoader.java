@@ -8,6 +8,7 @@
 package fr.presentapi.csv;
 
 public class StudentLoader extends CSVLoader{
+	private final String[] _fields = {"numEtu", "firstname", "lastname"};
 	public StudentLoader(String filepath){
 		super(filepath);
 	}
@@ -19,6 +20,6 @@ public class StudentLoader extends CSVLoader{
 		}
 	}
 
-	public void _insert(String[] data){
+	private void _insert(String[] data){
 	}
 }
