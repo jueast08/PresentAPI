@@ -20,9 +20,6 @@ public class Status {
         _label = label;
         _statusId = Status.DEFAULT_ID;
     }
-
-    
-    
     
     public long getStatusId() {
         return _statusId;
@@ -38,7 +35,5 @@ public class Status {
 
     public void setLabel(String label) {
         _label = label;
-    }
-    
-    
+    }   
 }
