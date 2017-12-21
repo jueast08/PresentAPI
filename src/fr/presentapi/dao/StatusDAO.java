@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class StatusDAO {
-
     private static final String TABLE = "Status";
 
     private final Connection _connexion;
@@ -33,7 +32,7 @@ public class StatusDAO {
         try {
             PreparedStatement stmt = _connexion.prepareStatement(query);
             stmt.setString(2, String.valueOf(status.getStatusId()));
-            if (status.getStatusId() != Users.DEFAULT_ID) {
+            if (status.getStatusId() != Status.DEFAULT_ID) {
                 stmt.setString(1, String.valueOf(status.getStatusId()));
             }
             if (!stmt.execute()) {

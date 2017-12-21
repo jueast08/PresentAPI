@@ -36,6 +36,7 @@ public class BelongModel{
 				System.err.println("Error executing query: " + query);
 				success = false;
 			}
+			_conn.commit();
 		}
 		catch(SQLException e){
 			System.err.println("SQLException: " + e);

@@ -48,6 +48,8 @@ public class StudentLoader extends CSVLoader{
 
 	private void _insert(String[] data){
 		long statusId = 1L;
+		/* TODO: get status */
+		/* TODO: create groups from td, tp, promo, major */
 		Users u = new Users(
 			Long.parseLong(data[_FIELDS.get("etuid")]),
 			data[_FIELDS.get("prenom")],
