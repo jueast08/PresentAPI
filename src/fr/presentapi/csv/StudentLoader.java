@@ -40,13 +40,17 @@ public class StudentLoader extends CSVLoader{
 	}
 
 	@Override
-	public void load(){
+	public int load(){
+		int failedRows = 0;
 		while(getParser().hasNext()){
-			_insert(getParser().next());
+			if(!_insert(getParser().next())){
+				failedRows++;
+			}
 		}
+		return failedRows;
 	}
 
-	private void _insert(String[] data){
+	private boolean _insert(String[] data){
 		long statusId = 1L;
 		/* TODO: get status */
 		/* TODO: create groups from td, tp, promo, major */
@@ -58,5 +62,6 @@ public class StudentLoader extends CSVLoader{
 			"0123456789",/* Random salt */
 			statusId
 		);
+		return _usermodel.insertUsers(u);
 	}
 }

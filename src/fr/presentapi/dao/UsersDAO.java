@@ -41,7 +41,7 @@ public class UsersDAO {
 
             _connexion.commit();
         } catch (SQLException e) {
-            System.err.println("SQLException");
+            System.err.println("UserDAO.java(SQLException): " + e.getMessage());
             success = false;
         }
 

@@ -37,11 +37,13 @@ public class BelongModelTest{
 		groups.add(_g1);
 		users.add(_u1);
 
+		/*
 		when(_model.insert(any(MockUser.class), any(MockUser.class))).thenReturn(true);
 		when(_model.findGroupForUser(1)).thenReturn(groups);
 		when(_model.findGroupForUser(0)).thenReturn(new ArrayList<Group>());
 		when(_model.findUserInGroup(0)).thenReturn(new ArrayList<MockUser>());
 		when(_model.findUserInGroup(0)).thenReturn(users);
+		*/
 	}
 
 	@Test
