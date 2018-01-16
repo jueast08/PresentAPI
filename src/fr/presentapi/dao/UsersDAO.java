@@ -27,14 +27,14 @@ public class UsersDAO {
 
         try {
             PreparedStatement stmt = _connexion.prepareStatement(query);
-            stmt.setString(1, String.valueOf(users.getNumEtu()));
+            stmt.setLong(1, users.getNumEtu());
 			stmt.setString(2, users.getFName());
 			stmt.setString(3, users.getLName());
             stmt.setString(4, users.getMail());
             stmt.setString(5, users.getSalt());
             stmt.setLong(6, users.getStatusId());
 
-            if (!stmt.execute()) {
+            if (stmt.executeUpdate() == 0) {
                 System.err.println("UsersDAO.java(Error executing query): " + query);
                 return false;
             }
@@ -48,21 +48,21 @@ public class UsersDAO {
         return success;
     }
     
-    boolean deleteUsers(Users users) {
+    public boolean deleteUsers(long numetu) {
         boolean success = true;
-        String query = "DELETE FROM " + TABLE + "WHERE numEtu = ";
+        String query = "DELETE FROM " + TABLE + " WHERE numEtu = ?";
 
         try {
             PreparedStatement stmt = _connexion.prepareStatement(query);
-            stmt.setString(1, String.valueOf(users.getNumEtu()));
-            if (!stmt.execute()) {
+            stmt.setLong(1, numetu);
+            if (stmt.executeUpdate() == 0) {
                 System.err.println("Error executing query: " + query);
                 return false;
             }
 
             _connexion.commit();
         } catch (SQLException e) {
-            System.err.println("SQLException");
+            System.err.println("UsersDAO.java(SQLException): " + e.getMessage());
             success = false;
         }
 

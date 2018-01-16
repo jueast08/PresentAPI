@@ -51,7 +51,7 @@ public class StudentLoader extends CSVLoader{
 			if(!_insert(row)){
 				failedRows++;
 			}
-			_createGroups(row);
+			//_createGroups(row);
 		}
 		return failedRows;
 	}

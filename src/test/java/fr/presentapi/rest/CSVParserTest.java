@@ -24,20 +24,16 @@ public class CSVParserTest{
 	@Test
 	public void parseRow(){
 		final String[] outputs = {
-			"[1,smith,john,smith.john@ensicaen.fr,info,image,2019,B,3]",
-			"[2,debroise,quentin,debroise.quentin@ensicaen.fr,info,image,2019,B,3]",
-			"[3,easterly,julian,easterly@ensicaen.fr,monetique,2019,B,3]",
-			"[4,smagghe,coline,smagghe@ensicaen.fr,image,2019,B,3]",
-			"[5,nicol,pierre,nicol@ensicaen.fr,monetique,2019,A,1]",
-			"[6,Leymarie,jeAnNe,leymarie@ensicaen.fr,image,2019,B,3]",
+			"[1, smith, john, smith.john@ensicaen.fr, info, image, 2019, B, 3]",
+			"[2, debroise, quentin, debroise.quentin@ensicaen.fr, info, image, 2019, B, 3]",
+			"[3, easterly, julian, easterly@ensicaen.fr, info, monetique, 2019, B, 3]",
+			"[4, smagghe, coline, smagghe@ensicaen.fr, info, image, 2019, B, 3]",
+			"[5, nicol, pierre, nicol@ensicaen.fr, info, monetique, 2019, A, 1]",
+			"[6, Leymarie, jeAnNe, leymarie@ensicaen.fr, info, image, 2019, B, 3]",
 		};
 
 		for(int i = 0; _parser.hasNext(); i++){
-			String a = Arrays.toString(_parser.next());
-			System.out.println("got : " + a);
-			//assertTrue(outputs[i].equals(Arrays.toString(_parser.next())));
-			System.out.println("expected : " + outputs[i]);
-			assertTrue(outputs[i].equals(a));
+			assertTrue(outputs[i].equals(Arrays.toString(_parser.next())));
 		}
 
 		assertTrue(_parser.hasNext());
