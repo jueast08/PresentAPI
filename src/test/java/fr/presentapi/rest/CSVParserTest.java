@@ -9,7 +9,6 @@ package test.java.fr.presentapi.rest;
 
 import fr.presentapi.csv.CSVParser;
 import java.util.Arrays;
-import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,16 +24,20 @@ public class CSVParserTest{
 	@Test
 	public void parseRow(){
 		final String[] outputs = {
-			"[00000001, smith, john, smith.john@ensicaen.fr, info, image, 2019, B, 3]",
-			"[00000002, debroise, quentin, debroise.quentin@ensicaen.fr, info, image, 2019, B, 3]",
-			"[00000003, easterly, julian, easterly@ensicaen.fr, monetique, 2019, B, 3]",
-			"[00000004, smagghe, coline, smagghe@ensicaen.fr, image, 2019, B, 3]",
-			"[00000005, nicol, pierre, nicol@ensicaen.fr, monetique, 2019, A, 2]",
-			"[00000006, Leymarie, jeAnNe, leymarie@ensicaen.fr, image, 2019, B, 3]",
+			"[1,smith,john,smith.john@ensicaen.fr,info,image,2019,B,3]",
+			"[2,debroise,quentin,debroise.quentin@ensicaen.fr,info,image,2019,B,3]",
+			"[3,easterly,julian,easterly@ensicaen.fr,monetique,2019,B,3]",
+			"[4,smagghe,coline,smagghe@ensicaen.fr,image,2019,B,3]",
+			"[5,nicol,pierre,nicol@ensicaen.fr,monetique,2019,A,1]",
+			"[6,Leymarie,jeAnNe,leymarie@ensicaen.fr,image,2019,B,3]",
 		};
 
 		for(int i = 0; _parser.hasNext(); i++){
-			assertTrue(outputs[i].equals(Arrays.toString(_parser.next())));
+			String a = Arrays.toString(_parser.next());
+			System.out.println("got : " + a);
+			//assertTrue(outputs[i].equals(Arrays.toString(_parser.next())));
+			System.out.println("expected : " + outputs[i]);
+			assertTrue(outputs[i].equals(a));
 		}
 
 		assertTrue(_parser.hasNext());

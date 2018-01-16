@@ -10,11 +10,15 @@ package fr.presentapi.csv;
 import fr.presentapi.dao.BelongModel;
 import fr.presentapi.dao.UsersDAO;
 import fr.presentapi.dao.Users;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 
 public class StudentLoader extends CSVLoader{
+	/* Fields with name and positions in the CSV file */
 	private static final Map<String, Integer> _FIELDS;
 	static{
 		Map<String, Integer> tmpmap = new HashMap<>();
@@ -43,9 +47,11 @@ public class StudentLoader extends CSVLoader{
 	public int load(){
 		int failedRows = 0;
 		while(getParser().hasNext()){
-			if(!_insert(getParser().next())){
+			String[] row = getParser().next();
+			if(!_insert(row)){
 				failedRows++;
 			}
+			_createGroups(row);
 		}
 		return failedRows;
 	}
@@ -63,5 +69,28 @@ public class StudentLoader extends CSVLoader{
 			statusId
 		);
 		return _usermodel.insertUsers(u);
+	}
+
+	public List<String> _createGroups(String[] data){
+		List<String> groups = new ArrayList<>();
+		String[] tokens = {
+			data[_FIELDS.get("promo")],
+			data[_FIELDS.get("specialite")],
+			data[_FIELDS.get("majeure")],
+			data[_FIELDS.get("td")],
+			data[_FIELDS.get("tp")]
+		};
+
+		for(int i = 0; i < tokens.length; i++){
+			String current = "";
+			for(int j = i; j < tokens.length; j++){
+				current += tokens[j];
+				groups.add(current);
+				current += "_";
+			}
+		}
+		
+		System.out.println(Arrays.toString(groups.toArray()));
+		return groups;
 	}
 }

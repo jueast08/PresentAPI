@@ -35,7 +35,7 @@ public class UsersDAO {
             stmt.setLong(6, users.getStatusId());
 
             if (!stmt.execute()) {
-                System.err.println("Error executing query: " + query);
+                System.err.println("UsersDAO.java(Error executing query): " + query);
                 return false;
             }
 

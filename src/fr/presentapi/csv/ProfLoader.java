@@ -12,7 +12,8 @@ public class ProfLoader extends CSVLoader{
 	}
 
 	@Override
-	public void load(){
+	public int load(){
+		return 0;
 	}
 	
 }
