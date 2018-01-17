@@ -5,7 +5,7 @@
  * @version 0.0.1 - Last modified: 20/11/17
  */
 
-package test.java.fr.presentapi.rest;
+package test.java.fr.presentapi.dao;
 
 import fr.presentapi.csv.CSVParser;
 import java.util.Arrays;

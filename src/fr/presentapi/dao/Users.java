@@ -18,9 +18,9 @@ public class Users {
 
     public Users(long numEtu, String fname, String lname, String mail, String salt, long statusId) {
         _numEtu = numEtu;
-		_fname = fname;
-		_lname = lname;
-		_mail = mail;
+		_fname = fname.toLowerCase();
+		_lname = lname.toLowerCase();
+		_mail = mail.toLowerCase();
         _salt = salt;
         _statusId = statusId;
     }

@@ -8,6 +8,8 @@
 package fr.presentapi.csv;
 
 import fr.presentapi.dao.BelongModel;
+import fr.presentapi.dao.Group;
+import fr.presentapi.dao.GroupModel;
 import fr.presentapi.dao.UsersDAO;
 import fr.presentapi.dao.Users;
 import java.util.ArrayList;
@@ -18,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class StudentLoader extends CSVLoader{
+	/* TODO: load from an existing config file or read firest line of csv with
+			 fields name
+	*/
 	/* Fields with name and positions in the CSV file */
 	private static final Map<String, Integer> _FIELDS;
 	static{
@@ -36,11 +41,13 @@ public class StudentLoader extends CSVLoader{
 
 	private UsersDAO _usermodel;
 	private BelongModel _belongmodel;
+	private GroupModel _groupmodel;
 
 	public StudentLoader(String filepath){
 		super(filepath);
 		_usermodel = new UsersDAO();
 		_belongmodel = new BelongModel();
+		_groupmodel = new GroupModel();
 	}
 
 	@Override
@@ -48,49 +55,48 @@ public class StudentLoader extends CSVLoader{
 		int failedRows = 0;
 		while(getParser().hasNext()){
 			String[] row = getParser().next();
+			_insertGroups(_createGroups(row));
 			if(!_insert(row)){
 				failedRows++;
 			}
-			//_createGroups(row);
+			_linkUserToGroups(_createUser(row), _createGroups(row));
 		}
 		return failedRows;
 	}
 
-	private boolean _insert(String[] data){
+	private Users _createUser(String[] data){
 		long statusId = 1L;
 		/* TODO: get status */
-		/* TODO: create groups from td, tp, promo, major */
-		Users u = new Users(
+		return new Users(
 			Long.parseLong(data[_FIELDS.get("etuid")]),
 			data[_FIELDS.get("prenom")],
 			data[_FIELDS.get("nom")],
 			data[_FIELDS.get("email")],
 			"0123456789",/* Random salt */
-			statusId
-		);
-		return _usermodel.insertUsers(u);
+			statusId);
+	}
+	
+	private boolean _insert(String[] data){
+		return _usermodel.insertUsers(_createUser(data));
 	}
 
-	public List<String> _createGroups(String[] data){
+	public String _createGroups(String[] data){
 		List<String> groups = new ArrayList<>();
-		String[] tokens = {
-			data[_FIELDS.get("promo")],
-			data[_FIELDS.get("specialite")],
-			data[_FIELDS.get("majeure")],
-			data[_FIELDS.get("td")],
-			data[_FIELDS.get("tp")]
-		};
+		String group = 
+			data[_FIELDS.get("promo")] + "_" + 
+			data[_FIELDS.get("specialite")] + "_" +
+			data[_FIELDS.get("majeure")] + "_" +
+			data[_FIELDS.get("td")] + "_" +
+			data[_FIELDS.get("tp")];
 
-		for(int i = 0; i < tokens.length; i++){
-			String current = "";
-			for(int j = i; j < tokens.length; j++){
-				current += tokens[j];
-				groups.add(current);
-				current += "_";
-			}
-		}
-		
-		System.out.println(Arrays.toString(groups.toArray()));
-		return groups;
+		return group;
+	}
+	
+	public void _insertGroups(String group){
+		_groupmodel.insert(new Group(group));
+	}
+	
+	public void _linkUserToGroups(Users user, String group){
+		_belongmodel.insert(user, _groupmodel.find(group));
 	}
 }

@@ -35,14 +35,14 @@ public class StatusDAO {
             if (status.getStatusId() != Status.DEFAULT_ID) {
                 stmt.setString(1, String.valueOf(status.getStatusId()));
             }
-            if (!stmt.execute()) {
-                System.err.println("Error executing query: " + query);
+            if (stmt.executeUpdate() == 0) {
+                System.err.println("StatusDAO.java(Error executing query): " + query);
                 return false;
             }
 
             _connexion.commit();
         } catch (SQLException e) {
-            System.err.println("SQLException");
+            System.err.println("StatusDAO.java(SQLException): " + e.getMessage());
             success = false;
         }
 

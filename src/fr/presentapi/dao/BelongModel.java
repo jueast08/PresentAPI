@@ -24,22 +24,22 @@ public class BelongModel{
 		_conn = DbConnection.getConnection();
 	}
 
-	public boolean insert(MockUser u, Group g){
+	public boolean insert(Users u, Group g){
 		boolean success = true;
-		String query = "INSERT INTO " + TABLE + " VALUES(?, ?)";
+		String query = "INSERT INTO " + TABLE + "(numEtu, groupId) VALUES(?, ?)";
 
 		try{
 			PreparedStatement stmt = _conn.prepareStatement(query);
-			stmt.setLong(1, u.getId());
+			stmt.setLong(1, u.getNumEtu());
 			stmt.setLong(2, g.getId());
 			if(!stmt.execute()){
-				System.err.println("Error executing query: " + query);
+				System.err.println("BelongModel.java(Error executing query): " + query);
 				success = false;
 			}
 			_conn.commit();
 		}
 		catch(SQLException e){
-			System.err.println("SQLException: " + e);
+			System.err.println("BelongModel.java(SQLException): " + e);
 			success = false;
 		}
 

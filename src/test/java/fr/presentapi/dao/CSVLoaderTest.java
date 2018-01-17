@@ -9,7 +9,12 @@ package test.java.fr.presentapi.dao;
 import fr.presentapi.csv.CSVParser;
 import static org.junit.Assert.assertEquals;
 import fr.presentapi.csv.StudentLoader;
+import fr.presentapi.dao.DbConnection;
 import fr.presentapi.dao.UsersDAO;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,13 +23,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class CSVLoaderTest{
 	@Before
-	public void setup(){
+	public void setup() throws SQLException{
 		/* Cleans database before running tests */
-		UsersDAO usermodel = new UsersDAO();
-		CSVParser parser = new CSVParser("resources/students.csv");
-		while(parser.hasNext()){
-			usermodel.deleteUsers(Long.parseLong(parser.next()[0]));
-		}
+		Connection conn = DbConnection.getConnection();
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("DELETE FROM Groups");
+		conn.commit();
 	}
 	
 	@Test

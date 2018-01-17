@@ -29,13 +29,13 @@ public class GroupModelTest{
 	public void setup() throws SQLException{
 		_group = new Group(1, "Projet present");
 		when(_model.insert(any(Group.class))).thenReturn(true);
-		when(_model.find(any(Long.class))).thenReturn(_group);
+		when(_model.find(any(String.class))).thenReturn(_group);
 	}
 
 	@Test
 	public void insertFindGroup(){
 		_model.insert(_group);
-		Group g = _model.find(1L);
+		Group g = _model.find("Projet present");
 		assertEquals(_group, g);
 	}	
 }
