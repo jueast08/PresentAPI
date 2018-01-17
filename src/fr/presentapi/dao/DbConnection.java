@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Quentin Debroise <debroise@ecole.ensicaen.fr>
+ * @author Coline Smagghe <smagghe@ecole.ensicaen.fr>
+ *
+ * @version 0.0.1 - Last modified: 23/11/17
  */
 package fr.presentapi.dao;
 
@@ -9,10 +10,6 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- *
- * @author Coline
- */
 public final class DbConnection {
 
     private DbConnection() {
