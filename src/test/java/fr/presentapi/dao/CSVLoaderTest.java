@@ -6,12 +6,9 @@
  */
 package test.java.fr.presentapi.dao;
 
-import fr.presentapi.csv.CSVParser;
 import static org.junit.Assert.assertEquals;
 import fr.presentapi.csv.StudentLoader;
 import fr.presentapi.dao.DbConnection;
-import fr.presentapi.dao.UsersDAO;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;

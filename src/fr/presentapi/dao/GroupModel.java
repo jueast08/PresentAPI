@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GroupModel{
+public class GroupModel extends Model<Group>{
 	public static final String TABLE = "Groups";
 	public static final String[] FIELDS = {"groupId", "name"};
 
@@ -22,6 +22,7 @@ public class GroupModel{
 		_conn = DbConnection.getConnection();
 	}
 
+	@Override
 	public boolean insert(Group group){
 		boolean success = true;
 		/* Ugly as fuck */
