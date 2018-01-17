@@ -10,32 +10,32 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class EventDAO {
-
-    private static final String TABLE = "Event";
+public class CodeModel {
+    
+    private static final String TABLE = "Code";
 
     private final Connection _connexion;
 
-    public EventDAO() {
+    public CodeModel() {
         _connexion = DbConnection.getConnection();
     }
 
-    public boolean insertStatus(Event event) {
+    public boolean insertCode(Code code) {
         boolean success = true;
         String query = "INSERT INTO " + TABLE;
 
-        if (event.getEventId() != Event.DEFAULT_ID) {
-            query += "(numEtu, label, eventId) VALUES(?, ?, ?)";
+        if (code.getDuration() != Code.DEFAULT_DURATION) {
+            query += "(code, creation, duration) VALUES(?, ?, ?)";
         } else {
-            query += "(numEtu, label) VALUES(?, ?)";
+            query += "(code, creation) VALUES(?, ?)";
         }
 
         try {
             PreparedStatement stmt = _connexion.prepareStatement(query);
-            stmt.setString(1, String.valueOf(event.getNumEtu()));
-            stmt.setString(2, event.getLabel());
-            if (event.getEventId() != Event.DEFAULT_ID) {
-                stmt.setString(3, String.valueOf(event.getEventId()));
+            stmt.setString(1, code.getCode());
+            stmt.setString(2, code.getCreation());
+            if (code.getDuration() != Code.DEFAULT_DURATION) {
+                stmt.setString(3, String.valueOf(code.getDuration()));
             }
             if (!stmt.execute()) {
                 System.err.println("Error executing query: " + query);
