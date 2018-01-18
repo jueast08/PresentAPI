@@ -1,7 +1,7 @@
 /**
  * @author Quentin Debroise <debroise@ecole.ensicaen.fr>
  * @author Coline Smagghe <smagghe@ecole.ensicaen.fr>
- * 
+ *
  * @version 0.0.1 - Last modified: 18/01/18
  */
 package fr.presentapi.rest;
@@ -38,35 +38,33 @@ public class CodeGenerator {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response launchCall(String reception) {
-        JSONObject jsonReception= new JSONObject(reception);
+        JSONObject jsonReception = new JSONObject(reception);
         String nameGroup = jsonReception.getJSONObject("data").getString("groups");
         int userId = jsonReception.getJSONObject("data").getInt("id");
         long duration = jsonReception.getJSONObject("data").getLong("duration");
         String eventName = "appel";
         String currentDate = "now";
-		
-		if (duration < 60 || duration > 5000) {
+
+        if (duration < 60 || duration > 5000) {
             return Response.status(400).entity(new JSONObject("{\"message\":\"Wrong duration\"}").toString()).build();
         }
-        
+
         UserModel user = new UserModel();
-		if (!user.exists(userId)) {
-            return Response.status(400).entity(new JSONObject("{\"Message\": \"No such user\"}").toString()).build();
+        if (!user.exists(userId)) {
+            return Response.status(400).entity(new JSONObject("{\"message\": \"No such user\"}").toString()).build();
         }
-       
-        
+
         Event event = new Event(userId, eventName);
         EventModel eventModel = new EventModel();
         eventModel.insert(event);
-        
+
         Code code = new Code(generateRandomCode(), currentDate);
         CodeModel codeModel = new CodeModel();
         codeModel.insert(code);
-        
+
         JSONObject jsonReponse = new JSONObject();
         jsonReponse.put("code", code.getCode());
-		jsonReponse.put("patate", nameGroup);
-     
+
         return Response.status(200).entity(jsonReponse.toString()).build();
-	}
+    }
 }
