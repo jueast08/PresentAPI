@@ -61,9 +61,9 @@ CREATE TABLE Present(
     numEtu INTEGER NOT NULL,
     eventId INTEGER NOT NULL,
 
-    PRIMARY KEY(numEtu, eventId, code),
+    PRIMARY KEY(numEtu, eventId),
     FOREIGN KEY(numEtu) REFERENCES Users(numEtu),
-    FOREIGN KEY(eventId) REFERENCES Event(eventId),
+    FOREIGN KEY(eventId) REFERENCES Event(eventId)
 );
 
 CREATE TABLE EventGroups(
@@ -71,8 +71,8 @@ CREATE TABLE EventGroups(
     eventId INTEGER,
     FOREIGN KEY(groupId) REFERENCES Groups(groupId),
     FOREIGN KEY(eventId) REFERENCES Event(eventId),
-    PRIMARY KEY(groupId, eventId),
-)
+    PRIMARY KEY(groupId, eventId)
+);
 
 INSERT INTO Status(label) VALUES("student");
 INSERT INTO Status(label) VALUES("prof");
@@ -82,7 +82,7 @@ INSERT INTO Status(label) VALUES("prof");
 -- /* SQLite specific */
 
 CREATE TRIGGER Trigg_DeleteUser
-BEFORE DELETE ON User
+BEFORE DELETE ON Users
 FOR EACH ROW
 BEGIN
     DELETE FROM Present WHERE numEtu = old.numEtu;
