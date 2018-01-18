@@ -9,9 +9,11 @@ package fr.presentapi.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class CodeModel {
-    
+public class CodeModel extends Model<Code> {
+
     private static final String TABLE = "Code";
 
     private final Connection _connexion;
@@ -20,7 +22,8 @@ public class CodeModel {
         _connexion = DbConnection.getConnection();
     }
 
-    public boolean insertCode(Code code) {
+    @Override
+    public boolean insert(Code code) {
         boolean success = true;
         String query = "INSERT INTO " + TABLE;
 
@@ -49,5 +52,22 @@ public class CodeModel {
         }
 
         return success;
+    }
+
+    @Override
+    public boolean exists(Object pk) { //voir avec la nouvelle BDD
+        String query = "SELECT 2 FROM " + UserModel.TABLE + " WHERE code = ?";
+        try {
+            PreparedStatement stmt = _connexion.prepareStatement(query);
+            stmt.setString(1, (String) pk);
+            if (!stmt.execute()) {
+                System.err.println("UserModel.java(Error executing query: " + query);
+                return false;
+            }
+            return stmt.getResultSet().next();
+        } catch (SQLException e) {
+            Logger.getLogger(UserModel.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+        }
+        return true;
     }
 }

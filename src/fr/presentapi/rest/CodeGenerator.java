@@ -37,31 +37,31 @@ public class CodeGenerator {
     @GET
     @Produces("application/json")
     //@Consumes("application/json")
-    public Response launchCall(/*String reception*/) {
-       /* JSONObject jsonReception= new JSONObject(reception);
+    public Response launchCall(String reception) {
+        JSONObject jsonReception= new JSONObject(reception);
         String nameGroup = jsonReception.getJSONObject("data").getString("groups");
         int userId = jsonReception.getJSONObject("data").getInt("id");
         long duration = jsonReception.getJSONObject("data").getLong("duration");
-        String eventName = "appel";*/
+        String eventName = "appel";
         String currentDate = "now";
         
-        /*
+        
         UserModel user = new UserModel();
         if (!user.exists(userId)) {
-            return Response.status(400).entity("User doesn't exist").build();
+            return Response.status(400).entity(new JSONObject("{}").toString()).build();
         }
         
         if (duration < 60 || duration > 5000) {
-            return Response.status(400).entity("Impossible value for duration").build();
+            return Response.status(400).entity(new JSONObject("{}").toString()).build();
         }
         
         Event event = new Event(userId, eventName);
         EventModel eventModel = new EventModel();
         eventModel.insert(event);
-        */
-        // Code code = new Code(generateRandomCode(), currentDate);
-        //CodeModel codeModel = new CodeModel();
-        //codeModel.insertCode(code);
+        
+        Code code = new Code(generateRandomCode(), currentDate);
+        CodeModel codeModel = new CodeModel();
+        codeModel.insert(code);
         
         JSONObject jsonReponse = new JSONObject();
         jsonReponse.put("code", generateRandomCode());
