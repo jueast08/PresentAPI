@@ -34,18 +34,18 @@ public class CodeGenerator {
         return str;
     }
 
-    @POST
+    @GET
     @Produces("application/json")
-    @Consumes("application/json")
-    public Response launchCall(String reception) {
-        JSONObject jsonReception= new JSONObject(reception);
+    //@Consumes("application/json")
+    public Response launchCall(/*String reception*/) {
+       /* JSONObject jsonReception= new JSONObject(reception);
         String nameGroup = jsonReception.getJSONObject("data").getString("groups");
         int userId = jsonReception.getJSONObject("data").getInt("id");
         long duration = jsonReception.getJSONObject("data").getLong("duration");
-        String eventName = "appel";
+        String eventName = "appel";*/
         String currentDate = "now";
         
-        
+        /*
         UserModel user = new UserModel();
         if (!user.exists(userId)) {
             return Response.status(400).entity("User doesn't exist").build();
@@ -58,13 +58,13 @@ public class CodeGenerator {
         Event event = new Event(userId, eventName);
         EventModel eventModel = new EventModel();
         eventModel.insert(event);
-
-        Code code = new Code(generateRandomCode(), currentDate);
-        CodeModel codeModel = new CodeModel();
-        codeModel.insertCode(code);
+        */
+        // Code code = new Code(generateRandomCode(), currentDate);
+        //CodeModel codeModel = new CodeModel();
+        //codeModel.insertCode(code);
         
         JSONObject jsonReponse = new JSONObject();
-        jsonReponse.put("code", code.getCode());
+        jsonReponse.put("code", generateRandomCode());
         
         return Response.status(200).entity(jsonReponse.toString()).build();
     }
