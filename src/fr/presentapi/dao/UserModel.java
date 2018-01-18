@@ -8,7 +8,6 @@ package fr.presentapi.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,13 +38,13 @@ public class UserModel extends Model<User>{
             stmt.setLong(6, user.getStatusId());
 
             if (stmt.executeUpdate() == 0) {
-                System.err.println("UsersDAO.java(Error executing query): " + query);
+                System.err.println("UserModel.java(Error executing query): " + query);
                 return false;
             }
 
             _connexion.commit();
         } catch (SQLException e) {
-            System.err.println("UserDAO.java(SQLException): " + e.getMessage());
+            System.err.println("UserModel.java(SQLException): " + e.getMessage());
             success = false;
         }
 
@@ -66,7 +65,7 @@ public class UserModel extends Model<User>{
 
             _connexion.commit();
         } catch (SQLException e) {
-            System.err.println("UsersDAO.java(SQLException): " + e.getMessage());
+            System.err.println("UserModel.java(SQLException): " + e.getMessage());
             success = false;
         }
 
@@ -80,7 +79,7 @@ public class UserModel extends Model<User>{
 			PreparedStatement stmt = _connexion.prepareStatement(query);
 			stmt.setLong(1, (Long)pk);
 			if(!stmt.execute()){
-				System.err.println("UsersDAO.java(Error executing query: " + query);
+				System.err.println("UserModel.java(Error executing query: " + query);
 				return false;
 			}
 			return stmt.getResultSet().next();
