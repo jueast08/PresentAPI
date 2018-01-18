@@ -9,15 +9,13 @@ package test.java.fr.presentapi.dao;
 
 import fr.presentapi.dao.BelongModel;
 import fr.presentapi.dao.Group;
-import fr.presentapi.dao.MockUser;
+import fr.presentapi.dao.User;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
-import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -26,14 +24,14 @@ public class BelongModelTest{
 	private BelongModel _model;	
 	private BelongModel _belong;
 	private Group _g1;
-	private MockUser _u1;
+	private User _u1;
 
 	@Before
 	public void setup(){
 		_g1 = new Group(1, "Projet Present");
-		_u1 = new MockUser();
+		_u1 = new User(1L, "bob", "patrick", "bob@example.com", "0123456789", 1L);
 		List<Group> groups = new ArrayList<>();
-		List<MockUser> users = new ArrayList<>();
+		List<User> users = new ArrayList<>();
 		groups.add(_g1);
 		users.add(_u1);
 

@@ -10,11 +10,11 @@ package fr.presentapi.dao;
 
 public class User {
     private long _numEtu;
-    private String _salt;
-    private long _statusId;
 	private String _fname;
 	private String _lname;
 	private String _mail;
+    private String _salt;
+    private long _statusId;
 
     public User(long numEtu, String fname, String lname, String mail, String salt, long statusId) {
         _numEtu = numEtu;

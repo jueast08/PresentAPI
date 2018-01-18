@@ -8,9 +8,12 @@ package fr.presentapi.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class UserModel {
+public class UserModel extends Model<User>{
     public static final String TABLE = "Users";
     
     private final Connection _connexion;
@@ -19,7 +22,8 @@ public class UserModel {
 		_connexion = DbConnection.getConnection();
     }
         
-    public boolean insertUsers(User users) {
+	@Override
+    public boolean insert(User user) {
         boolean success = true;
         String query = "INSERT INTO " + TABLE +
 			"(numEtu, firstname, lastname, mail, salt, statusId) " + 
@@ -27,12 +31,12 @@ public class UserModel {
 
         try {
             PreparedStatement stmt = _connexion.prepareStatement(query);
-            stmt.setLong(1, users.getNumEtu());
-			stmt.setString(2, users.getFName());
-			stmt.setString(3, users.getLName());
-            stmt.setString(4, users.getMail());
-            stmt.setString(5, users.getSalt());
-            stmt.setLong(6, users.getStatusId());
+            stmt.setLong(1, user.getNumEtu());
+			stmt.setString(2, user.getFName());
+			stmt.setString(3, user.getLName());
+            stmt.setString(4, user.getMail());
+            stmt.setString(5, user.getSalt());
+            stmt.setLong(6, user.getStatusId());
 
             if (stmt.executeUpdate() == 0) {
                 System.err.println("UsersDAO.java(Error executing query): " + query);
@@ -68,4 +72,21 @@ public class UserModel {
 
         return success;
     }
+	
+	@Override
+	public boolean exists(Object pk){
+		String query = "SELECT 1 FROM " + UserModel.TABLE + " WHERE numEtu = ?";
+		try{
+			PreparedStatement stmt = _connexion.prepareStatement(query);
+			stmt.setLong(1, (Long)pk);
+			if(!stmt.execute()){
+				System.err.println("UsersDAO.java(Error executing query: " + query);
+				return false;
+			}
+			return stmt.getResultSet().next();
+		} catch(SQLException e){
+			Logger.getLogger(UserModel.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+		}
+		return true;
+	}
 }

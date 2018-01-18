@@ -77,7 +77,7 @@ public class StudentLoader extends CSVLoader{
 	}
 	
 	private boolean _insert(String[] data){
-		return _usermodel.insertUsers(_createUser(data));
+		return _usermodel.insert(_createUser(data));
 	}
 
 	public String _createGroups(String[] data){

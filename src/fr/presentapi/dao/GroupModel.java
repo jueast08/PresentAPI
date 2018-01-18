@@ -70,4 +70,10 @@ public class GroupModel extends Model<Group>{
 
 		return g;
 	}
+
+	@Override
+	public boolean exists(Object pk){
+		// TODO
+		return true;
+	}
 }
