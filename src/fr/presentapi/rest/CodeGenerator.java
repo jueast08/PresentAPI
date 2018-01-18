@@ -14,6 +14,7 @@ import fr.presentapi.dao.UserModel;
 import java.util.Random;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
@@ -33,14 +34,14 @@ public class CodeGenerator {
         return str;
     }
 
-    @GET
+    @POST
     @Produces("application/json")
     @Consumes("application/json")
     public Response launchCall(String reception) {
         JSONObject jsonReception= new JSONObject(reception);
-        String nameGroup = jsonReception.getString("groups") ;
-        int userId = jsonReception.getInt("id");
-        long duration = jsonReception.getLong("duration");
+        String nameGroup = jsonReception.getJSONObject("data").getString("groups");
+        int userId = jsonReception.getJSONObject("data").getInt("id");
+        long duration = jsonReception.getJSONObject("data").getLong("duration");
         String eventName = "appel";
         String currentDate = "now";
         
