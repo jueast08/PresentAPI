@@ -17,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.json.JSONObject;
 
@@ -34,38 +35,40 @@ public class CodeGenerator {
         return str;
     }
 
-    @GET
-    @Produces("application/json")
-    //@Consumes("application/json")
-    public Response launchCall(/*String reception*/) {
-       /* JSONObject jsonReception= new JSONObject(reception);
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response launchCall(String reception) {
+        JSONObject jsonReception= new JSONObject(reception);
         String nameGroup = jsonReception.getJSONObject("data").getString("groups");
         int userId = jsonReception.getJSONObject("data").getInt("id");
         long duration = jsonReception.getJSONObject("data").getLong("duration");
-        String eventName = "appel";*/
+        String eventName = "appel";
         String currentDate = "now";
+		
+		if (duration < 60 || duration > 5000) {
+            return Response.status(400).entity(new JSONObject("{\"message\":\"Wrong duration\"}").toString()).build();
+        }
         
-        /*
         UserModel user = new UserModel();
-        if (!user.exists(userId)) {
-            return Response.status(400).entity("User doesn't exist").build();
+		if (!user.exists(userId)) {
+            return Response.status(400).entity(new JSONObject("{\"Message\": \"No such user\"}").toString()).build();
         }
+       
         
-        if (duration < 60 || duration > 5000) {
-            return Response.status(400).entity("Impossible value for duration").build();
-        }
         
         Event event = new Event(userId, eventName);
         EventModel eventModel = new EventModel();
         eventModel.insert(event);
-        */
-        // Code code = new Code(generateRandomCode(), currentDate);
-        //CodeModel codeModel = new CodeModel();
-        //codeModel.insertCode(code);
+        
+        Code code = new Code(generateRandomCode(), currentDate);
+        CodeModel codeModel = new CodeModel();
+        codeModel.insertCode(code);
         
         JSONObject jsonReponse = new JSONObject();
-        jsonReponse.put("code", generateRandomCode());
-        
+        jsonReponse.put("code", code.getCode());
+		jsonReponse.put("patate", nameGroup);
+     
         return Response.status(200).entity(jsonReponse.toString()).build();
-    }
+	}
 }

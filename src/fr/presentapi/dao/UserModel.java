@@ -86,7 +86,7 @@ public class UserModel extends Model<User> {
             return stmt.getResultSet().next();
         } catch (SQLException e) {
             Logger.getLogger(UserModel.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+			return false;
         }
-        return true;
     }
 }
