@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class EventModel {
+public class EventModel extends Model<Event>{
 
     private static final String TABLE = "Event";
 
@@ -20,7 +20,8 @@ public class EventModel {
         _connexion = DbConnection.getConnection();
     }
 
-    public boolean insertStatus(Event event) {
+    @Override
+    public boolean insert(Event event) {
         boolean success = true;
         String query = "INSERT INTO " + TABLE;
 
@@ -49,5 +50,10 @@ public class EventModel {
         }
 
         return success;
+    }
+
+    @Override
+    public boolean exists(Object pk) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -2,14 +2,15 @@
  * @author Quentin Debroise <debroise@ecole.ensicaen.fr>
  * @author Coline Smagghe <smagghe@ecole.ensicaen.fr>
  * 
- * @version 0.0.1 - Last modified: 17/01/18
+ * @version 0.0.1 - Last modified: 18/01/18
  */
 package fr.presentapi.rest;
 
 import fr.presentapi.dao.Code;
 import fr.presentapi.dao.CodeModel;
 import fr.presentapi.dao.Event;
-import fr.presentapi.dao.EventDAO;
+import fr.presentapi.dao.EventModel;
+import fr.presentapi.dao.UserModel;
 import java.util.Random;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -23,16 +24,7 @@ public class CodeGenerator {
 
     private final static int CODE_LENGTH = 10;
 
-    /**
-     * @GET @Produces("application/json") 
-     * public Response generateCode(){
-     * JSONObject json = new JSONObject(); json.put("code",
-     * _generateRandomCode());
-     *
-     * return Response.status(200).entity(json.toString()).build();
-	}
-     */
-    private String _generateRandomCode() {
+    private String generateRandomCode() {
         Random r = new Random();
         String str = "";
         for (int i = 0; i < CODE_LENGTH; i++) {
@@ -42,22 +34,37 @@ public class CodeGenerator {
     }
 
     @GET
-    @Produces("application/")
-    @Consumes("sijensavaisquelquechose/json")
-    public Response machin(String nameGroup, int userId, long duration, String eventName, String currentDate) {
-        // tester si l'id de user existe quand ce sera possible
-        if (duration < 60 || duration > 5000) {
-            return Response.status(400).entity("non!!!").build();
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response launchCall(String reception) {
+        JSONObject jsonReception= new JSONObject(reception);
+        String nameGroup = jsonReception.getString("groups") ;
+        int userId = jsonReception.getInt("id");
+        long duration = jsonReception.getLong("duration");
+        String eventName = "appel";
+        String currentDate = "now";
+        
+        
+        UserModel user = new UserModel();
+        if (!user.exists(userId)) {
+            return Response.status(400).entity("User doesn't exist").build();
         }
-        JSONObject json = new JSONObject(); // voir comment récuperer les données 
+        
+        if (duration < 60 || duration > 5000) {
+            return Response.status(400).entity("Impossible value for duration").build();
+        }
         
         Event event = new Event(userId, eventName);
-        EventDAO truc = new EventDAO();
-        truc.insertStatus(event);
-        Code code = new Code(_generateRandomCode(),currentDate);
+        EventModel eventModel = new EventModel();
+        eventModel.insert(event);
+
+        Code code = new Code(generateRandomCode(), currentDate);
         CodeModel codeModel = new CodeModel();
         codeModel.insertCode(code);
-        json.put("code", code.getCode());
-        return Response.status(200).entity(json.toString()).build();
+        
+        JSONObject jsonReponse = new JSONObject();
+        jsonReponse.put("code", code.getCode());
+        
+        return Response.status(200).entity(jsonReponse.toString()).build();
     }
 }
