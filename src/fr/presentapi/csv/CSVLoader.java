@@ -1,0 +1,26 @@
+/**
+ * @author Quentin Debroise <debroise@ecole.ensicaen.fr>
+ * @author Coline Smagghe <smagghe@ecole.ensicaen.fr>
+ *
+ * @version 0.0.1 - Last modified: 20/11/17
+ */
+
+package fr.presentapi.csv;
+
+
+public abstract class CSVLoader{
+	private CSVParser _parser;
+
+	public CSVLoader(String filepath){
+		_parser = new CSVParser(filepath);
+	}
+
+	public CSVParser getParser(){
+		return _parser;
+	}
+
+	/**
+	 * @return The number of failed insertions. 0 if every row has been inserted
+	 */
+	public abstract int load();
+}
