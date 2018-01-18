@@ -10,20 +10,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class StatusDAO {
-    private static final String TABLE = "Status";
+public class EventModel {
+
+    private static final String TABLE = "Event";
 
     private final Connection _connexion;
 
-    public StatusDAO() {
+    public EventModel() {
         _connexion = DbConnection.getConnection();
     }
 
-    public boolean insertStatus(Status status) {
+    public boolean insertStatus(Event event) {
         boolean success = true;
         String query = "INSERT INTO " + TABLE;
 
-        if (status.getStatusId() != Status.DEFAULT_ID) {
+        if (event.getEventId() != Status.DEFAULT_ID) {
             query += " VALUES(?, ?)";
         } else {
             query += "VALUES(?)";
@@ -31,18 +32,19 @@ public class StatusDAO {
 
         try {
             PreparedStatement stmt = _connexion.prepareStatement(query);
-            stmt.setString(2, String.valueOf(status.getStatusId()));
-            if (status.getStatusId() != Status.DEFAULT_ID) {
-                stmt.setString(1, String.valueOf(status.getStatusId()));
+            stmt.setString(2, String.valueOf(event.getNumEtu()));
+            stmt.setString(3, event.getLabel());
+            if (event.getEventId() != Event.DEFAULT_ID) {
+                stmt.setString(1, String.valueOf(event.getEventId()));
             }
             if (stmt.executeUpdate() == 0) {
-                System.err.println("StatusDAO.java(Error executing query): " + query);
+                System.err.println("EventDAO.java(Error executing query): " + query);
                 return false;
             }
 
             _connexion.commit();
         } catch (SQLException e) {
-            System.err.println("StatusDAO.java(SQLException): " + e.getMessage());
+            System.err.println("EventDAO.java(SQLException): " + e.getMessage());
             success = false;
         }
 

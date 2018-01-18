@@ -10,8 +10,8 @@ package fr.presentapi.csv;
 import fr.presentapi.dao.BelongModel;
 import fr.presentapi.dao.Group;
 import fr.presentapi.dao.GroupModel;
-import fr.presentapi.dao.UsersDAO;
-import fr.presentapi.dao.Users;
+import fr.presentapi.dao.UserModel;
+import fr.presentapi.dao.User;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,13 +39,13 @@ public class StudentLoader extends CSVLoader{
 		_FIELDS = Collections.unmodifiableMap(tmpmap);
 	}
 
-	private UsersDAO _usermodel;
+	private UserModel _usermodel;
 	private BelongModel _belongmodel;
 	private GroupModel _groupmodel;
 
 	public StudentLoader(String filepath){
 		super(filepath);
-		_usermodel = new UsersDAO();
+		_usermodel = new UserModel();
 		_belongmodel = new BelongModel();
 		_groupmodel = new GroupModel();
 	}
@@ -64,10 +64,10 @@ public class StudentLoader extends CSVLoader{
 		return failedRows;
 	}
 
-	private Users _createUser(String[] data){
+	private User _createUser(String[] data){
 		long statusId = 1L;
 		/* TODO: get status */
-		return new Users(
+		return new User(
 			Long.parseLong(data[_FIELDS.get("etuid")]),
 			data[_FIELDS.get("prenom")],
 			data[_FIELDS.get("nom")],
@@ -96,7 +96,7 @@ public class StudentLoader extends CSVLoader{
 		_groupmodel.insert(new Group(group));
 	}
 	
-	public void _linkUserToGroups(Users user, String group){
+	public void _linkUserToGroups(User user, String group){
 		_belongmodel.insert(user, _groupmodel.find(group));
 	}
 }

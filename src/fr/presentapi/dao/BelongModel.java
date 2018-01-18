@@ -24,7 +24,7 @@ public class BelongModel{
 		_conn = DbConnection.getConnection();
 	}
 
-	public boolean insert(Users u, Group g){
+	public boolean insert(User u, Group g){
 		boolean success = true;
 		String query = "INSERT INTO " + TABLE + "(numEtu, groupId) VALUES(?, ?)";
 
@@ -50,7 +50,7 @@ public class BelongModel{
 		ArrayList<Group> groups = new ArrayList<>();
 		ResultSet rs;
 		String query = "SELECT * FROM " + TABLE + " g " +
-			"LEFT JOIN " + MockUser.TABLE + " u ON g.numEtu = u.numEtu " + 
+			"LEFT JOIN " + UserModel.TABLE + " u ON g.numEtu = u.numEtu " + 
 			"WHERE numEtu = ?";
 
 		try{
@@ -70,8 +70,8 @@ public class BelongModel{
 		return groups;
 	}
 
-	public List<MockUser> findUserInGroup(long gid){
-		ArrayList<MockUser> users = new ArrayList<>();
+	public List<User> findUserInGroup(long gid){
+		ArrayList<User> users = new ArrayList<>();
 		ResultSet rs;
 		String query = "SELECT * FROM " + TABLE +
 			"WHERE groupId = ?";
@@ -81,7 +81,14 @@ public class BelongModel{
 			stmt.setLong(1, gid);
 			rs = stmt.executeQuery();
 			while(rs.next()){
-				users.add(new MockUser());
+				users.add(new User(
+					rs.getLong("numEtu"),
+					rs.getString("lastname"),
+					rs.getString("firstname"),
+					rs.getString("mail"),
+					rs.getString("salt"),
+					rs.getLong("statusId")
+				));
 			}
 		}
 		catch(SQLException e){

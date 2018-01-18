@@ -10,16 +10,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UsersDAO {
+public class UserModel {
     public static final String TABLE = "Users";
     
     private final Connection _connexion;
     
-    public UsersDAO(){
+    public UserModel(){
 		_connexion = DbConnection.getConnection();
     }
         
-    public boolean insertUsers(Users users) {
+    public boolean insertUsers(User users) {
         boolean success = true;
         String query = "INSERT INTO " + TABLE +
 			"(numEtu, firstname, lastname, mail, salt, statusId) " + 

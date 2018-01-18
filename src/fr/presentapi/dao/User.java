@@ -8,7 +8,7 @@
 package fr.presentapi.dao;
 
 
-public class Users {
+public class User {
     private long _numEtu;
     private String _salt;
     private long _statusId;
@@ -16,7 +16,7 @@ public class Users {
 	private String _lname;
 	private String _mail;
 
-    public Users(long numEtu, String fname, String lname, String mail, String salt, long statusId) {
+    public User(long numEtu, String fname, String lname, String mail, String salt, long statusId) {
         _numEtu = numEtu;
 		_fname = fname.toLowerCase();
 		_lname = lname.toLowerCase();
