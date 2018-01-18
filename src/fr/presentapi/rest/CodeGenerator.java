@@ -13,7 +13,6 @@ import fr.presentapi.dao.EventModel;
 import fr.presentapi.dao.UserModel;
 import java.util.Random;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -56,14 +55,13 @@ public class CodeGenerator {
         }
        
         
-        
         Event event = new Event(userId, eventName);
         EventModel eventModel = new EventModel();
         eventModel.insert(event);
         
         Code code = new Code(generateRandomCode(), currentDate);
         CodeModel codeModel = new CodeModel();
-        codeModel.insertCode(code);
+        codeModel.insert(code);
         
         JSONObject jsonReponse = new JSONObject();
         jsonReponse.put("code", code.getCode());
