@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class EventModel {
+public class EventModel extends Model<Event> {
 
     private static final String TABLE = "Event";
 
@@ -20,11 +20,12 @@ public class EventModel {
         _connexion = DbConnection.getConnection();
     }
 
-    public boolean insertStatus(Event event) {
+    @Override
+    public boolean insert(Event event) {
         boolean success = true;
         String query = "INSERT INTO " + TABLE;
 
-        if (event.getEventId() != Status.DEFAULT_ID) {
+        if (event.getEventId() != Event.DEFAULT_ID) {
             query += " VALUES(?, ?)";
         } else {
             query += "VALUES(?)";
@@ -32,7 +33,7 @@ public class EventModel {
 
         try {
             PreparedStatement stmt = _connexion.prepareStatement(query);
-            stmt.setString(2, String.valueOf(event.getNumEtu()));
+            stmt.setString(2, String.valueOf(event.getUid()));
             stmt.setString(3, event.getLabel());
             if (event.getEventId() != Event.DEFAULT_ID) {
                 stmt.setString(1, String.valueOf(event.getEventId()));
@@ -49,5 +50,10 @@ public class EventModel {
         }
 
         return success;
+    }
+
+    @Override
+    public boolean exists(Object pk) {
+        return true;
     }
 }

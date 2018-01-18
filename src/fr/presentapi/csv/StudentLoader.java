@@ -7,6 +7,7 @@
 
 package fr.presentapi.csv;
 
+import fr.presentapi.dao.Belong;
 import fr.presentapi.dao.BelongModel;
 import fr.presentapi.dao.Group;
 import fr.presentapi.dao.GroupModel;
@@ -97,6 +98,6 @@ public class StudentLoader extends CSVLoader{
 	}
 	
 	public void _linkUserToGroups(User user, String group){
-		_belongmodel.insert(user, _groupmodel.find(group));
+		_belongmodel.insert(new Belong(user.getUid(), _groupmodel.find(group).getId()));
 	}
 }

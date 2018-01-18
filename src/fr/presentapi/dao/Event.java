@@ -7,23 +7,23 @@
 package fr.presentapi.dao;
 
 public class Event {
+
     public static long DEFAULT_ID = -1;
     private long _eventId;
-    private int _numEtu;
+    private long _uid;
     private String _label;
 
-    public Event(long eventId, int numEtu, String label) {
+    public Event(long eventId, long uid, String label) {
         _eventId = eventId;
-        _numEtu = numEtu;
+        _uid = uid;
         _label = label;
     }
 
-    public Event(int numEtu, String label) {
-        _numEtu = numEtu;
+    public Event(long uid, String label) {
+        _uid = uid;
         _label = label;
         _eventId = Event.DEFAULT_ID;
     }
-    
 
     public long getEventId() {
         return _eventId;
@@ -33,12 +33,12 @@ public class Event {
         _eventId = eventId;
     }
 
-    public int getNumEtu() {
-        return _numEtu;
+    public long getUid() {
+        return _uid;
     }
 
-    public void setNumEtu(int numEtu) {
-        _numEtu = numEtu;
+    public void setUid(long uid) {
+        _uid = uid;
     }
 
     public String getLabel() {
@@ -48,5 +48,4 @@ public class Event {
     public void setLabel(String label) {
         _label = label;
     }
-    
 }

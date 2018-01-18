@@ -9,9 +9,9 @@ package fr.presentapi.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class StatusModel extends Model<Status>{
+public class StatusModel extends Model<Status> {
+
     private static final String TABLE = "Status";
 
     private final Connection _connexion;
@@ -20,7 +20,7 @@ public class StatusModel extends Model<Status>{
         _connexion = DbConnection.getConnection();
     }
 
-	@Override
+    @Override
     public boolean insert(Status status) {
         boolean success = true;
         String query = "INSERT INTO " + TABLE;
@@ -51,8 +51,8 @@ public class StatusModel extends Model<Status>{
         return success;
     }
 
-	@Override
-	public boolean exists(Object pk){
-		throw new NotImplementedException();
-	}
+    @Override
+    public boolean exists(Object pk) {
+        return true;
+    }
 }

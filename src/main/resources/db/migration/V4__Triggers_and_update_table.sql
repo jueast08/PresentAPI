@@ -26,7 +26,7 @@ CREATE TABLE Groups(
 );
 
 CREATE TABLE Users(
-    numEtu INTEGER PRIMARY KEY,
+    uid INTEGER PRIMARY KEY,
     firstname VARCHAR(128) NOT NULL,
     lastname VARCHAR(128) NOT NULL,
     mail VARCHAR(128) NOT NULL,
@@ -38,31 +38,31 @@ CREATE TABLE Users(
 
 
 CREATE TABLE Belongs(
-    numEtu INTEGER,
+    uid INTEGER,
     groupId INTEGER,
 
-    PRIMARY KEY(numEtu, groupId),
-    FOREIGN KEY(numEtu) REFERENCES Users(numEtu),
+    PRIMARY KEY(uid, groupId),
+    FOREIGN KEY(uid) REFERENCES Users(uid),
     FOREIGN KEY(groupId) REFERENCES Groups(groupId)
 );
 
 CREATE TABLE Event(
     eventId INTEGER PRIMARY KEY,
-    numEtu INTEGER NOT NULL,
+    uid INTEGER NOT NULL,
     codeId INTEGER NOT NULL,
     label VARCHAR(128) NOT NULL,
 
-    FOREIGN KEY(numEtu) REFERENCES Users,
+    FOREIGN KEY(uid) REFERENCES Users,
     FOREIGN KEY(codeId) REFERENCES Code(codeId)
 );
 
 CREATE TABLE Present(
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    numEtu INTEGER NOT NULL,
+    uid INTEGER NOT NULL,
     eventId INTEGER NOT NULL,
 
-    PRIMARY KEY(numEtu, eventId),
-    FOREIGN KEY(numEtu) REFERENCES Users(numEtu),
+    PRIMARY KEY(uid, eventId),
+    FOREIGN KEY(uid) REFERENCES Users(uid),
     FOREIGN KEY(eventId) REFERENCES Event(eventId)
 );
 
@@ -85,8 +85,8 @@ CREATE TRIGGER Trigg_DeleteUser
 BEFORE DELETE ON Users
 FOR EACH ROW
 BEGIN
-    DELETE FROM Present WHERE numEtu = old.numEtu;
-    DELETE FROM Belongs WHERE numEtu = old.numEtu;
+    DELETE FROM Present WHERE uid = old.uid;
+    DELETE FROM Belongs WHERE uid = old.uid;
 END;
 
 CREATE TRIGGER Trigg_DeleteGroup
@@ -95,8 +95,8 @@ FOR EACH ROW
 BEGIN
     /* Group deleted -> users in that group deleted */
     /* TODO: delete user only if they are no longer in a group */
-    DELETE FROM Users WHERE numEtu IN (
-        SELECT numEtu
+    DELETE FROM Users WHERE uid IN (
+        SELECT uid
         FROM Belongs
         WHERE groupId = old.groupId
     );
