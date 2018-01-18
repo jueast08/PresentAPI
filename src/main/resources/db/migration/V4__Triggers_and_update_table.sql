@@ -101,7 +101,7 @@ BEGIN
         WHERE groupId = old.groupId
     );
     /* Group deleted -> events referring to that groups deleted */
-    DELETE FROM EventGroup WHERE groupId = old.groupId;
+    DELETE FROM EventGroups WHERE groupId = old.groupId;
 END;
 
 CREATE TRIGGER Trigg_DeleteEvent
@@ -110,7 +110,7 @@ FOR EACH ROW
 BEGIN
     DELETE FROM Code WHERE codeId = old.codeId;
     DELETE FROM Present WHERE eventId = old.eventId;
-    DELETE FROM EventGroup WHERE eventId = old.eventId;
+    DELETE FROM EventGroups WHERE eventId = old.eventId;
 END;
 
 
