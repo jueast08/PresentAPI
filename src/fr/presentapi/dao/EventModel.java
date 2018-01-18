@@ -10,13 +10,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class EventDAO {
+public class EventModel {
 
     private static final String TABLE = "Event";
 
     private final Connection _connexion;
 
-    public EventDAO() {
+    public EventModel() {
         _connexion = DbConnection.getConnection();
     }
 
@@ -37,14 +37,14 @@ public class EventDAO {
             if (event.getEventId() != Event.DEFAULT_ID) {
                 stmt.setString(1, String.valueOf(event.getEventId()));
             }
-            if (!stmt.execute()) {
-                System.err.println("Error executing query: " + query);
+            if (stmt.executeUpdate() == 0) {
+                System.err.println("EventDAO.java(Error executing query): " + query);
                 return false;
             }
 
             _connexion.commit();
         } catch (SQLException e) {
-            System.err.println("SQLException");
+            System.err.println("EventDAO.java(SQLException): " + e.getMessage());
             success = false;
         }
 

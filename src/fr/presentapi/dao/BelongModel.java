@@ -24,21 +24,22 @@ public class BelongModel{
 		_conn = DbConnection.getConnection();
 	}
 
-	public boolean insert(MockUser u, Group g){
+	public boolean insert(User u, Group g){
 		boolean success = true;
-		String query = "INSERT INTO " + TABLE + " VALUES(?, ?)";
+		String query = "INSERT INTO " + TABLE + "(numEtu, groupId) VALUES(?, ?)";
 
 		try{
 			PreparedStatement stmt = _conn.prepareStatement(query);
-			stmt.setLong(1, u.getId());
+			stmt.setLong(1, u.getNumEtu());
 			stmt.setLong(2, g.getId());
 			if(!stmt.execute()){
-				System.err.println("Error executing query: " + query);
+				System.err.println("BelongModel.java(Error executing query): " + query);
 				success = false;
 			}
+			_conn.commit();
 		}
 		catch(SQLException e){
-			System.err.println("SQLException: " + e);
+			System.err.println("BelongModel.java(SQLException): " + e);
 			success = false;
 		}
 
@@ -49,7 +50,7 @@ public class BelongModel{
 		ArrayList<Group> groups = new ArrayList<>();
 		ResultSet rs;
 		String query = "SELECT * FROM " + TABLE + " g " +
-			"LEFT JOIN " + MockUser.TABLE + " u ON g.numEtu = u.numEtu " + 
+			"LEFT JOIN " + UserModel.TABLE + " u ON g.numEtu = u.numEtu " + 
 			"WHERE numEtu = ?";
 
 		try{
@@ -69,8 +70,8 @@ public class BelongModel{
 		return groups;
 	}
 
-	public List<MockUser> findUserInGroup(long gid){
-		ArrayList<MockUser> users = new ArrayList<>();
+	public List<User> findUserInGroup(long gid){
+		ArrayList<User> users = new ArrayList<>();
 		ResultSet rs;
 		String query = "SELECT * FROM " + TABLE +
 			"WHERE groupId = ?";
@@ -80,7 +81,14 @@ public class BelongModel{
 			stmt.setLong(1, gid);
 			rs = stmt.executeQuery();
 			while(rs.next()){
-				users.add(new MockUser());
+				users.add(new User(
+					rs.getLong("numEtu"),
+					rs.getString("lastname"),
+					rs.getString("firstname"),
+					rs.getString("mail"),
+					rs.getString("salt"),
+					rs.getLong("statusId")
+				));
 			}
 		}
 		catch(SQLException e){

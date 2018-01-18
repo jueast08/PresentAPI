@@ -19,5 +19,8 @@ public abstract class CSVLoader{
 		return _parser;
 	}
 
-	public abstract void load();
+	/**
+	 * @return The number of failed insertions. 0 if every row has been inserted
+	 */
+	public abstract int load();
 }

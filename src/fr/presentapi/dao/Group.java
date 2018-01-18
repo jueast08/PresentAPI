@@ -11,28 +11,28 @@ public class Group{
 	public static long DEFAULT_ID = -1;	
 
 	private long _groupId;
-	private String _label;	
+	private String _name;	
 
-	public Group(long groupId, String label){
+	public Group(long groupId, String name){
 		_groupId = groupId;
-		_label = label;
+		_name = name;
 	}
 
-	public Group(String label){
+	public Group(String name){
 		_groupId = Group.DEFAULT_ID;
-		_label = label;
+		_name = name;
 	}
 
 	public long getId(){
 		return _groupId;
 	}
 
-	public String getLabel(){
-		return _label;
+	public String getName(){
+		return _name;
 	}
 
 	public String toString(){
-		return "<Group Object>{id: " + _groupId + ", label: " + _label + "}";
+		return "<Group Object>{id: " + _groupId + ", label: " + _name + "}";
 	}
 
 }

@@ -9,18 +9,19 @@ package fr.presentapi.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class StatusDAO {
-
+public class StatusModel extends Model<Status>{
     private static final String TABLE = "Status";
 
     private final Connection _connexion;
 
-    public StatusDAO() {
+    public StatusModel() {
         _connexion = DbConnection.getConnection();
     }
 
-    public boolean insertStatus(Status status) {
+	@Override
+    public boolean insert(Status status) {
         boolean success = true;
         String query = "INSERT INTO " + TABLE;
 
@@ -33,20 +34,25 @@ public class StatusDAO {
         try {
             PreparedStatement stmt = _connexion.prepareStatement(query);
             stmt.setString(2, String.valueOf(status.getStatusId()));
-            if (status.getStatusId() != Users.DEFAULT_ID) {
+            if (status.getStatusId() != Status.DEFAULT_ID) {
                 stmt.setString(1, String.valueOf(status.getStatusId()));
             }
-            if (!stmt.execute()) {
-                System.err.println("Error executing query: " + query);
+            if (stmt.executeUpdate() == 0) {
+                System.err.println("StatusDAO.java(Error executing query): " + query);
                 return false;
             }
 
             _connexion.commit();
         } catch (SQLException e) {
-            System.err.println("SQLException");
+            System.err.println("StatusDAO.java(SQLException): " + e.getMessage());
             success = false;
         }
 
         return success;
     }
+
+	@Override
+	public boolean exists(Object pk){
+		throw new NotImplementedException();
+	}
 }
