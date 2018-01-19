@@ -5,4 +5,5 @@ branches:
     - master
     - develop
 
-script: mvn clean install verify flyway:migrate test sonar:sonar
+#script: mvn clean install verify flyway:migrate test sonar:sonar
+script: mvn clean install verify test sonar:sonar
