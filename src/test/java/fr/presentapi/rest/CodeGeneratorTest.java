@@ -7,7 +7,9 @@
 package test.java.fr.presentapi.rest;
 
 import fr.presentapi.rest.CodeGenerator;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
@@ -27,7 +29,9 @@ public class CodeGeneratorTest extends JerseyTest{
 	 */
 	@Test
 	public void testCodeGenerator(){
-		final Response response1 = target("generate-code").request().get();
+		String jsondata = "{}";
+		final Response response1 = target("generate-code")
+			.request(MediaType.APPLICATION_JSON).post(Entity.json(jsondata));
 		final Response response2 = target("generate-code").request().get();
 		JSONObject code1 = new JSONObject(
 			response1.readEntity(String.class));

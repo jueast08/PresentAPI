@@ -17,6 +17,7 @@
 		<sonar.exclusions>src/test/**</sonar.exclusions>
 	</properties>
 	<build>
+		<finalName>PresentAPI</finalName>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
@@ -112,6 +113,11 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.3-1104-jdbc41</version>
+		</dependency>
 		<!-- for TESTING -->
 		<dependency>
 			<groupId>org.xerial</groupId>

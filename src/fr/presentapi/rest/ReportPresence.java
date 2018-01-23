@@ -19,7 +19,6 @@ import org.json.JSONObject;
 
 @Path("/i-am-here")
 public class ReportPresence {
-
 	  @GET
 	  @Produces("application/json")
 	  public Response example() {
