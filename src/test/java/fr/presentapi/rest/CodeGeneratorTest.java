@@ -7,6 +7,8 @@
 package test.java.fr.presentapi.rest;
 
 import fr.presentapi.rest.CodeGenerator;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
@@ -29,16 +31,25 @@ public class CodeGeneratorTest extends JerseyTest{
 	 */
 	@Test
 	public void testCodeGenerator(){
-		String jsondata = "{}";
-		final Response response1 = target("generate-code")
-			.request(MediaType.APPLICATION_JSON).post(Entity.json(jsondata));
-		final Response response2 = target("generate-code").request().get();
-		JSONObject code1 = new JSONObject(
-			response1.readEntity(String.class));
-		JSONObject code2 = new JSONObject(
-			response2.readEntity(String.class));
+		String payload = "{"
+			+ "\"code\": \"34T03JG0JQGJE\""
+			+ "}";
+		
+		final Response response1 = target("PresentAPI/api/generate-code")
+			.request(MediaType.APPLICATION_JSON_TYPE)
+			.post(Entity.json(payload));
+		final Response response2 = target("PresentAPI/api/generate-code")
+			.request(MediaType.APPLICATION_JSON_TYPE)
+			.post(Entity.json(payload));
+		
+		System.out.println(">>>>>\n\n\n");
+		System.out.println("1." + response2);
+		System.out.println("2." + response2.readEntity(String.class));
+		assertEquals(0, 1);
+		//JSONObject code1 = new JSONObject(response1.readEntity(String.class));
+		//JSONObject code2 = new JSONObject(response2.readEntity(String.class));
 
-		assertEquals(200, response1.getStatus());
-		assertNotEquals(code1.get("code"), code2.get("code"));
+		//assertEquals(200, response1.getStatus());
+		//assertNotEquals(code1.get("code"), code2.get("code"));
 	}
 }

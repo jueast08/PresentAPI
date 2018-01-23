@@ -28,7 +28,7 @@ public class EventModel extends Model<Event> {
         if (event.getEventId() != Event.DEFAULT_ID) {
             query += " VALUES(?, ?)";
         } else {
-            query += "VALUES(?)";
+            query += "(numEtu, label) VALUES(?, ?)";
         }
 
         try {
@@ -36,7 +36,7 @@ public class EventModel extends Model<Event> {
             stmt.setString(2, String.valueOf(event.getUid()));
             stmt.setString(3, event.getLabel());
             if (event.getEventId() != Event.DEFAULT_ID) {
-                stmt.setString(1, String.valueOf(event.getEventId()));
+                stmt.setString(3, String.valueOf(event.getEventId()));
             }
             if (stmt.executeUpdate() == 0) {
                 System.err.println("EventDAO.java(Error executing query): " + query);
@@ -55,5 +55,5 @@ public class EventModel extends Model<Event> {
     @Override
     public boolean exists(Object pk) {
         return true;
-    }
+	}
 }
