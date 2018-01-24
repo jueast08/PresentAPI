@@ -21,22 +21,26 @@ public class UserModel extends Model<User> {
     public UserModel() {
         _connexion = DbConnection.getConnection();
     }
+	
+	public UserModel(Connection conn){
+		_connexion = conn;
+	}
+	
 
     @Override
     public boolean insert(User user) {
         boolean success = true;
         String query = "INSERT INTO " + TABLE
-                + "(uid, firstname, lastname, mail, salt, statusId) "
-                + "VALUES(?, ?, ?, ?, ?, ?)";
+                + "(firstname, lastname, mail, salt, statusId) "
+                + "VALUES(?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement stmt = _connexion.prepareStatement(query);
-            stmt.setLong(1, user.getUid());
-            stmt.setString(2, user.getFName());
-            stmt.setString(3, user.getLName());
-            stmt.setString(4, user.getMail());
-            stmt.setString(5, user.getSalt());
-            stmt.setLong(6, user.getStatusId());
+            stmt.setString(1, user.getFName());
+            stmt.setString(2, user.getLName());
+            stmt.setString(3, user.getMail());
+            stmt.setString(4, user.getSalt());
+            stmt.setLong(5, user.getStatusId());
 
             if (stmt.executeUpdate() == 0) {
                 System.err.println("UserModel.java(Error executing query): " + query);

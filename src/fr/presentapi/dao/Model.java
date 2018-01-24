@@ -6,8 +6,11 @@
  */
 package fr.presentapi.dao;
 
+
 /* TODO: make all models extends this class */
 public abstract class Model<T>{
 	abstract public boolean insert(T obj);
 	abstract public boolean exists(Object pk);
+	//abstract public boolean get(...);
+	//asbstract public boolean delete(...);
 }

@@ -1,0 +1,109 @@
+DROP TABLE IF EXISTS Code;
+DROP TABLE IF EXISTS Status;
+DROP TABLE IF EXISTS Groups;
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Belongs;
+DROP TABLE IF EXISTS Event;
+DROP TABLE IF EXISTS Present;
+
+
+CREATE TABLE Code(
+    codeId INTEGER PRIMARY KEY,
+    code VARCHAR(16),
+    creation TIMESTAMP NOT NULL,
+    duration INTEGER DEFAULT 300 CHECK(duration > 0)
+);
+
+CREATE TABLE Status(
+    statusId INTEGER PRIMARY KEY,
+    label VARCHAR(128) NOT NULL
+);
+
+CREATE TABLE Groups(
+    groupId INTEGER PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Users(
+    numEtu INTEGER PRIMARY KEY,
+    firstname VARCHAR(128) NOT NULL,
+    lastname VARCHAR(128) NOT NULL,
+    mail VARCHAR(128) NOT NULL,
+    salt VARCHAR(10) DEFAULT '0',
+    statusId INTEGER NOT NULL,
+
+    FOREIGN KEY(statusId) REFERENCES Status(statusId)
+);
+
+
+CREATE TABLE Belongs(
+    numEtu INTEGER,
+    groupId INTEGER,
+
+    PRIMARY KEY(numEtu, groupId),
+    FOREIGN KEY(numEtu) REFERENCES Users(numEtu),
+    FOREIGN KEY(groupId) REFERENCES Groups(groupId)
+);
+
+CREATE TABLE Event(
+    eventId INTEGER PRIMARY KEY,
+    numEtu INTEGER NOT NULL,
+    codeId INTEGER NOT NULL,
+    label VARCHAR(128) NOT NULL,
+
+    FOREIGN KEY(numEtu) REFERENCES Users,
+    FOREIGN KEY(codeId) REFERENCES Code(codeId)
+);
+
+CREATE TABLE Present(
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    numEtu INTEGER NOT NULL,
+    eventId INTEGER NOT NULL,
+
+    PRIMARY KEY(numEtu, eventId),
+    FOREIGN KEY(numEtu) REFERENCES Users(numEtu),
+    FOREIGN KEY(eventId) REFERENCES Event(eventId)
+);
+
+CREATE TABLE EventGroups(
+    groupId INTEGER,
+    eventId INTEGER,
+    FOREIGN KEY(groupId) REFERENCES Groups(groupId),
+    FOREIGN KEY(eventId) REFERENCES Event(eventId),
+    PRIMARY KEY(groupId, eventId)
+);
+
+INSERT INTO Status(label) VALUES("student");
+INSERT INTO Status(label) VALUES("prof");
+
+
+CREATE TRIGGER Trigg_DeleteUser
+BEFORE DELETE ON Users
+FOR EACH ROW
+BEGIN
+    DELETE FROM Present WHERE numEtu = old.numEtu;
+    DELETE FROM Belongs WHERE numEtu = old.numEtu;
+END;
+
+CREATE TRIGGER Trigg_DeleteGroup
+BEFORE DELETE ON Groups
+FOR EACH ROW
+BEGIN
+    DELETE FROM Users WHERE numEtu IN (
+        SELECT numEtu
+        FROM Belongs
+        WHERE groupId = old.groupId
+    );
+    DELETE FROM EventGroups WHERE groupId = old.groupId;
+END;
+
+CREATE TRIGGER Trigg_DeleteEvent
+BEFORE DELETE ON Event
+FOR EACH ROW
+BEGIN
+    DELETE FROM Code WHERE codeId = old.codeId;
+    DELETE FROM Present WHERE eventId = old.eventId;
+    DELETE FROM EventGroups WHERE eventId = old.eventId;
+END;
+
+

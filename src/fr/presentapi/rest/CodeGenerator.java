@@ -44,7 +44,7 @@ public class CodeGenerator {
         long duration = jsonReception.getJSONObject("data").getLong("duration");
         String eventName = "appel";
         String currentDate = "now";
-
+		
         if (duration < 60 || duration > 5000) {
             return Response.status(400).entity(new JSONObject("{\"message\":\"Wrong duration\"}").toString()).build();
         }
@@ -56,8 +56,8 @@ public class CodeGenerator {
 
         Event event = new Event(userId, eventName);
         EventModel eventModel = new EventModel();
-        eventModel.insert(event);
-
+		eventModel.insert(event);
+		
         Code code = new Code(generateRandomCode(), currentDate);
         CodeModel codeModel = new CodeModel();
         codeModel.insert(code);

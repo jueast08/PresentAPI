@@ -23,6 +23,14 @@ public class User {
         _salt = salt;
         _statusId = statusId;
     }
+	
+	public User(String fname, String lname, String mail, String salt, long statusId){
+        _fname = fname.toLowerCase();
+        _lname = lname.toLowerCase();
+        _mail = mail.toLowerCase();
+        _salt = salt;
+        _statusId = statusId;
+	}
 
     public long getUid() {
         return _uid;

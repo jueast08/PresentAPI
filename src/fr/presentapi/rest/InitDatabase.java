@@ -71,7 +71,9 @@ public class InitDatabase{
 			Logger.getLogger(InitDatabase.class.getName()).log(Level.SEVERE, e.getMessage());
 		}
 		/**/
+		//StudentLoader loader = new StudentLoader("resources/students.csv");
 		StudentLoader loader = new StudentLoader("resources/students.csv");
+		//StudentLoader loader = new StudentLoader("/home/waffles/Documents/ensicaen/present/PresentAPI/resources/students.csv");
 		loader.load();
 		
 		json.put("message", "Database successfully initialized");

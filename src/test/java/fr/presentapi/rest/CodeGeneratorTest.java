@@ -32,20 +32,23 @@ public class CodeGeneratorTest extends JerseyTest{
 	@Test
 	public void testCodeGenerator(){
 		String payload = "{"
-			+ "\"code\": \"34T03JG0JQGJE\""
-			+ "}";
+			+ "\"data\": {"
+				+ "\"id\": 1,"
+				+ "\"duration\": 120,"
+				+ "\"groups\": \"info\""
+			+ "}}";
 		
-		final Response response1 = target("PresentAPI/api/generate-code")
+		final Response response1 = target("generate-code")
 			.request(MediaType.APPLICATION_JSON_TYPE)
 			.post(Entity.json(payload));
-		final Response response2 = target("PresentAPI/api/generate-code")
+		final Response response2 = target("generate-code")
 			.request(MediaType.APPLICATION_JSON_TYPE)
 			.post(Entity.json(payload));
 		
 		System.out.println(">>>>>\n\n\n");
 		System.out.println("1." + response2);
 		System.out.println("2." + response2.readEntity(String.class));
-		assertEquals(0, 1);
+		//assertEquals(0, 1);
 		//JSONObject code1 = new JSONObject(response1.readEntity(String.class));
 		//JSONObject code2 = new JSONObject(response2.readEntity(String.class));
 

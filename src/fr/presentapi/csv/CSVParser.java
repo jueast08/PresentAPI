@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -44,6 +45,14 @@ public final class CSVParser implements Iterator{
 	public boolean hasNext(){
 		try{
 			if(_buffer == null){
+				//ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+				/*
+				_buffer = new BufferedReader(
+					new InputStreamReader(
+						classLoader.getResourceAsStream(_filepath)));
+				*/
+				//System.out.println(classLoader.getResource(_filepath).getFile());
+				//_buffer = new BufferedReader(new FileReader(classLoader.getResource(_filepath).getFile()));
 				_buffer = new BufferedReader(new FileReader(_filepath));
 			}
 			if(_buffer.ready()){
