@@ -8,6 +8,43 @@ package fr.presentapi.dao;
 
 public class QueryBuilder{
 	private String _query;
+	private boolean _whereAdded;
+	
+	private enum WhereLogic{
+		WHERE_AND("AND"),
+		WHERE_OR("OR");
+		private final String _str;
+		private WhereLogic(String str){
+			_str = str;
+		}
+		@Override
+		public String toString(){
+			return _str;
+		}
+	}
+	
+	public enum WhereOp{
+		WHERE_EQ("="),
+		WHERE_NE("<>"),
+		WHERE_LT("<"),
+		WHERE_GT(">"),
+		WHERE_LE("<="),
+		WHERE_GE(">="),
+		WHERE_LIKE(" LIKE ");
+		private final String _str;
+		private WhereOp(String value){
+			_str = value;
+		}
+		@Override
+		public String toString(){
+			return _str;
+		}
+	}
+	
+	public QueryBuilder(){
+		_query = "";
+		_whereAdded = false;
+	}
 	
 	public QueryBuilder selectAll(String table){
 		_query = "SELECT * FROM " + table + " ";
@@ -31,7 +68,32 @@ public class QueryBuilder{
 		return this;
 	}
 	
+	public QueryBuilder where(String attribute){
+		return where(attribute, WhereOp.WHERE_EQ);
+	}
+	
+	
+	public QueryBuilder where(String attribute, WhereOp op, WhereLogic logic){
+		if(!_whereAdded){
+			_query += "WHERE ";
+			_whereAdded = true;
+		}
+		else{
+			_query += logic + " ";
+		}
+		_query += attribute + op + "? ";
+		return this;		
+	}
+	public QueryBuilder where(String attribute, WhereOp op){
+		return where(attribute, op, WhereLogic.WHERE_AND);
+	}
+	
+	public QueryBuilder orWhere(String attribute, WhereOp op){
+		return where(attribute, op, WhereLogic.WHERE_OR);
+	}
+	
 	public String build(){
+		_whereAdded = false;
 		return new String(_query);
 	}
 }
