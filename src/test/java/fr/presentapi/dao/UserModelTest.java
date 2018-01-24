@@ -12,6 +12,8 @@ import fr.presentapi.dao.UserModel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.ws.rs.core.Application;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +23,11 @@ import org.junit.Test;
 public class UserModelTest extends JerseyTest{
 	private Connection _conn;
 	private UserModel _model; 
+	
+	@Override
+	public Application configure(){
+		return new ResourceConfig(UserModelTest.class);
+	}
 	
 	@Before
 	public void setup() throws SQLException{

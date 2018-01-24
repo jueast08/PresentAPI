@@ -9,6 +9,12 @@ package fr.presentapi.dao;
 
 /* TODO: make all models extends this class */
 public abstract class Model<T>{
+	private QueryBuilder _query;
+	
+	public Model(){
+		_query = new QueryBuilder();
+	}
+	
 	abstract public boolean insert(T obj);
 	abstract public boolean exists(Object pk);
 	//abstract public boolean get(...);
