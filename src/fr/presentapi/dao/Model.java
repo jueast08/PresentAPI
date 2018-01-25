@@ -15,6 +15,11 @@ public abstract class Model<T>{
 		_query = new QueryBuilder();
 	}
 	
+	public QueryBuilder builderSelect(String table, String[] attributes){
+		return _query.select(table, attributes);
+	}
+	
+	abstract public QueryBuilder select(String[] attributes);
 	abstract public boolean insert(T obj);
 	abstract public boolean exists(Object pk);
 	//abstract public boolean get(...);

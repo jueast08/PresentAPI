@@ -26,6 +26,10 @@ public class UserModel extends Model<User> {
 		_connexion = conn;
 	}
 	
+	@Override
+	public QueryBuilder select(String[] attributes){
+		return builderSelect(TABLE, attributes);
+	}
 
     @Override
     public boolean insert(User user) {
@@ -41,7 +45,7 @@ public class UserModel extends Model<User> {
             stmt.setString(3, user.getMail());
             stmt.setString(4, user.getSalt());
             stmt.setLong(5, user.getStatusId());
-
+			
             if (stmt.executeUpdate() == 0) {
                 System.err.println("UserModel.java(Error executing query): " + query);
                 return false;

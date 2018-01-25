@@ -10,6 +10,10 @@ package test.java.fr.presentapi.dao;
 import static org.junit.Assert.*;
 
 import fr.presentapi.dao.QueryBuilder;
+import fr.presentapi.dao.UserModel;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,36 +63,45 @@ public class QueryBuilderTest{
 		String expected5 = "SELECT * FROM " + TEST_TABLE + " WHERE att1 LIKE ? ";
 		String expected6 = "SELECT * FROM " + TEST_TABLE + " WHERE att1>? AND att2 LIKE ? OR att3<=? ";
 		
-		String result = _builder.selectAll(TEST_TABLE).where("att1").build();
+		String result = _builder.selectAll(TEST_TABLE).where("att1", "placeholder").build();
 		assertTrueMsg(expected1, result);
 		
 		result = _builder.selectAll(TEST_TABLE)
-			.where("att1", QueryBuilder.WhereOp.WHERE_GT)
+			.where("att1", QueryBuilder.WhereOp.WHERE_GT, "placeholder")
 			.build();
 		assertTrueMsg(expected2, result);
 		
 		result = _builder.selectAll(TEST_TABLE)
-			.where("att1")
-			.where("att2")
+			.where("att1", "placeholder")
+			.where("att2", "placeholder")
 			.build();
 		assertTrueMsg(expected3, result);
 	
 		result = _builder.selectAll(TEST_TABLE)
-			.where("att1", QueryBuilder.WhereOp.WHERE_GT)
-			.orWhere("att2", QueryBuilder.WhereOp.WHERE_LT)
+			.where("att1", QueryBuilder.WhereOp.WHERE_GT, "placeholder")
+			.orWhere("att2", QueryBuilder.WhereOp.WHERE_LT, "placeholder")
 			.build();
 		assertTrueMsg(expected4, result);
 		
 		result = _builder.selectAll(TEST_TABLE)
-			.where("att1", QueryBuilder.WhereOp.WHERE_LIKE)
+			.where("att1", QueryBuilder.WhereOp.WHERE_LIKE, "placeholder")
 			.build();
 		assertTrueMsg(expected5, result);
 		
 		result = _builder.selectAll(TEST_TABLE)
-			.where("att1", QueryBuilder.WhereOp.WHERE_GT)
-			.where("att2", QueryBuilder.WhereOp.WHERE_LIKE)
-			.orWhere("att3", QueryBuilder.WhereOp.WHERE_LE)
+			.where("att1", QueryBuilder.WhereOp.WHERE_GT, "placeholder")
+			.where("att2", QueryBuilder.WhereOp.WHERE_LIKE, "placeholder")
+			.orWhere("att3", QueryBuilder.WhereOp.WHERE_LE, "placeholder")
 			.build();
 		assertTrueMsg(expected6, result);
+	}
+	
+	@Test
+	public void databaseTest() throws SQLException{
+		String attributes[] = {};
+		Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/presentdb", "testuser", "password");
+		UserModel model = new UserModel(conn);
+		model.select(attributes);
+		conn.close();
 	}
 }

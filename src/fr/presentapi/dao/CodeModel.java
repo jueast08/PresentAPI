@@ -21,6 +21,11 @@ public class CodeModel extends Model<Code> {
     public CodeModel() {
         _connexion = DbConnection.getConnection();
     }
+	
+	@Override
+	public QueryBuilder select(String[] attributes){
+		return builderSelect(TABLE, attributes);
+	}
 
     @Override
     public boolean insert(Code code) {

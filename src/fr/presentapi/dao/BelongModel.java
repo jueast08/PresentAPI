@@ -24,6 +24,12 @@ public class BelongModel extends Model<Belong> {
         _conn = DbConnection.getConnection();
     }
 
+	@Override
+	public QueryBuilder select(String[] attributes){
+		return builderSelect(TABLE, attributes);
+	}
+
+	
     @Override
     public boolean insert(Belong belong) {
         boolean success = true;

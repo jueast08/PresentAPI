@@ -6,9 +6,14 @@
  */
 package fr.presentapi.dao;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class QueryBuilder{
-	private String _query;
-	private boolean _whereAdded;
+	private String _table;
+	private final List<String> _attributes;
+	private final List<QueryWhere> _whereData;
 	
 	private enum WhereLogic{
 		WHERE_AND("AND"),
@@ -42,58 +47,72 @@ public class QueryBuilder{
 	}
 	
 	public QueryBuilder(){
-		_query = "";
-		_whereAdded = false;
+		_whereData = new ArrayList<>();
+		_attributes = new ArrayList<>();
+	}
+	
+	private void reset(){
+		_table = "";
+		_whereData.clear();
+		_attributes.clear();
 	}
 	
 	public QueryBuilder selectAll(String table){
-		_query = "SELECT * FROM " + table + " ";
+		_table = table;
 		return this;
 	}
 	
 	public QueryBuilder select(String table, String[] attributes){
-		_query = "SELECT ";
-		
-		if(attributes.length == 0){
-			_query += "*";
-		}
-		
-		for(int i = 0; i < attributes.length; i++){
-			_query += attributes[i];
-			if(i != attributes.length - 1){
-				_query += ",";
-			}
-		}
-		_query += " FROM " + table + " ";
+		_table = table;
+		_attributes.addAll(Arrays.asList(attributes));
 		return this;
 	}
 	
-	public QueryBuilder where(String attribute){
-		return where(attribute, WhereOp.WHERE_EQ);
-	}
-	
-	
-	public QueryBuilder where(String attribute, WhereOp op, WhereLogic logic){
-		if(!_whereAdded){
-			_query += "WHERE ";
-			_whereAdded = true;
-		}
-		else{
-			_query += logic + " ";
-		}
-		_query += attribute + op + "? ";
+	public QueryBuilder where(String attribute, WhereOp op, String value, WhereLogic logic){
+		String l = _whereData.isEmpty() ? "" : logic.toString();
+		_whereData.add(new QueryWhere(
+			attribute, 
+			op.toString(), 
+			value, 
+			l));
 		return this;		
 	}
-	public QueryBuilder where(String attribute, WhereOp op){
-		return where(attribute, op, WhereLogic.WHERE_AND);
+
+	public QueryBuilder where(String attribute, WhereOp op, String value){
+		return where(attribute, op, value, WhereLogic.WHERE_AND);
 	}
 	
-	public QueryBuilder orWhere(String attribute, WhereOp op){
-		return where(attribute, op, WhereLogic.WHERE_OR);
+	public QueryBuilder where(String attribute, String value){
+		return where(attribute, WhereOp.WHERE_EQ, value);
+	}	
+	
+	public QueryBuilder orWhere(String attribute, WhereOp op, String value){
+		return where(attribute, op, value, WhereLogic.WHERE_OR);
 	}
+	
 	
 	public String build(){
-		_whereAdded = false;
-		return new String(_query);
+		String query = "SELECT ";
+		if(_attributes.isEmpty()){
+			query += "*";
+		}
+		else{
+			for(int i = 0; i < _attributes.size(); i++){
+				query += _attributes.get(i);
+				if(i != _attributes.size() - 1){
+					query += ",";
+				}
+			}
+		}
+		query += " FROM " + _table + " ";
+		if(!_whereData.isEmpty()){
+			query += "WHERE ";
+			for(QueryWhere w : _whereData){
+				query += w;
+			}
+		}
+		
+		reset();
+		return query;
 	}
 }

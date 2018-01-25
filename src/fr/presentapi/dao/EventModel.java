@@ -19,6 +19,12 @@ public class EventModel extends Model<Event> {
     public EventModel() {
         _connexion = DbConnection.getConnection();
     }
+	
+	
+	@Override
+	public QueryBuilder select(String[] attributes){
+		return builderSelect(TABLE, attributes);
+	}
 
     @Override
     public boolean insert(Event event) {

@@ -31,7 +31,7 @@ public class UserModelTest extends JerseyTest{
 	
 	@Before
 	public void setup() throws SQLException{
-		_conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/presentdb", "waffles", "390M:YC648AVc2");
+		_conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/presentdb", "testuser", "password");
 		_model = new UserModel(_conn);
 	}
 	@After

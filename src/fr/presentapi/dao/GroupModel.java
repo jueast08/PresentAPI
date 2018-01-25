@@ -21,6 +21,12 @@ public class GroupModel extends Model<Group>{
 	public GroupModel(){
 		_conn = DbConnection.getConnection();
 	}
+	
+	
+	@Override
+	public QueryBuilder select(String[] attributes){
+		return builderSelect(TABLE, attributes);
+	}
 
 	@Override
 	public boolean insert(Group group){
