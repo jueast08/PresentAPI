@@ -4,13 +4,17 @@
  *
  * @version 0.0.1 - Last modified: 23/11/17
  */
-package fr.presentapi.dao;
+package fr.presentapi.querybuilder;
 
+import fr.presentapi.dao.Model;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class QueryBuilder{
+	private final Model _model;
 	private String _table;
 	private final List<String> _attributes;
 	private final List<QueryWhere> _whereData;
@@ -46,12 +50,13 @@ public class QueryBuilder{
 		}
 	}
 	
-	public QueryBuilder(){
+	public QueryBuilder(Model model){
+		_model = model;
 		_whereData = new ArrayList<>();
 		_attributes = new ArrayList<>();
 	}
 	
-	private void reset(){
+	public void reset(){
 		_table = "";
 		_whereData.clear();
 		_attributes.clear();
@@ -68,7 +73,7 @@ public class QueryBuilder{
 		return this;
 	}
 	
-	public QueryBuilder where(String attribute, WhereOp op, String value, WhereLogic logic){
+	public QueryBuilder where(String attribute, WhereOp op, Object value, WhereLogic logic){
 		String l = _whereData.isEmpty() ? "" : logic.toString();
 		_whereData.add(new QueryWhere(
 			attribute, 
@@ -77,19 +82,30 @@ public class QueryBuilder{
 			l));
 		return this;		
 	}
-
-	public QueryBuilder where(String attribute, WhereOp op, String value){
-		return where(attribute, op, value, WhereLogic.WHERE_AND);
+	
+	public QueryBuilder where(String attribute, Object value){
+		return where(attribute, WhereOp.WHERE_EQ, value, WhereLogic.WHERE_AND);
 	}
 	
-	public QueryBuilder where(String attribute, String value){
-		return where(attribute, WhereOp.WHERE_EQ, value);
+	public QueryBuilder where(String attribute, WhereOp op, Object value){
+		return where(attribute, op, value, WhereLogic.WHERE_AND);
 	}	
 	
-	public QueryBuilder orWhere(String attribute, WhereOp op, String value){
+	public QueryBuilder orWhere(String attribute, WhereOp op, Object value){
 		return where(attribute, op, value, WhereLogic.WHERE_OR);
 	}
 	
+	public List<Pair<String, Object>> getValuesToBind(){
+		List<Pair<String, Object>> values = new ArrayList<>();
+		for(QueryWhere w : _whereData){
+			values.add(new Pair<>(w.getAttribute(), w.getValue()));
+		}
+		return values;
+	}
+	
+	public String getTable(){
+		return _table;
+	}
 	
 	public String build(){
 		String query = "SELECT ";
@@ -111,8 +127,10 @@ public class QueryBuilder{
 				query += w;
 			}
 		}
-		
-		reset();
 		return query;
+	}
+	
+	public ResultSet request() throws SQLException{
+		return _model.request(this);
 	}
 }

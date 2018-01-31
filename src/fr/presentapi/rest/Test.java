@@ -6,6 +6,8 @@
 package fr.presentapi.rest;
 
 import fr.presentapi.dao.UserModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -15,9 +17,16 @@ import javax.ws.rs.core.MediaType;
 public class Test{
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String test(){
+	public String test() throws SQLException{
 		UserModel model = new UserModel();
-		boolean res = model.exists((Long)7L);
-		return res ? "exists" : "doesn't exist";
+		String[] att = {};
+		ResultSet rs = model.select(att).where("firstname", "smith").request();
+		if(rs == null){
+			return "Error occured : null ResultSet";
+		}
+		if(!rs.next()){
+			return "No result!";
+		}
+		return rs.getString("lastname");
 	}
 }

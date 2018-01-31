@@ -6,6 +6,7 @@
  */
 package fr.presentapi.dao;
 
+import fr.presentapi.querybuilder.QueryBuilder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -4,17 +4,16 @@
  *
  * @version 0.0.1 - Last modified: 23/11/17
  */
-package test.java.fr.presentapi.dao;
+package test.java.test.java.fr.presentapi.querybuilder;
 
 
 import static org.junit.Assert.*;
 
-import fr.presentapi.dao.QueryBuilder;
+import fr.presentapi.querybuilder.QueryBuilder;
 import fr.presentapi.dao.UserModel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +23,7 @@ public class QueryBuilderTest{
 	
 	@Before
 	public void setup(){
-		_builder = new QueryBuilder();
+		_builder = new QueryBuilder(new UserModel());
 	}
 	
 	private void assertTrueMsg(String expected, String got){
@@ -65,28 +64,33 @@ public class QueryBuilderTest{
 		
 		String result = _builder.selectAll(TEST_TABLE).where("att1", "placeholder").build();
 		assertTrueMsg(expected1, result);
+		_builder.reset();
 		
 		result = _builder.selectAll(TEST_TABLE)
 			.where("att1", QueryBuilder.WhereOp.WHERE_GT, "placeholder")
 			.build();
 		assertTrueMsg(expected2, result);
+		_builder.reset();
 		
 		result = _builder.selectAll(TEST_TABLE)
 			.where("att1", "placeholder")
 			.where("att2", "placeholder")
 			.build();
 		assertTrueMsg(expected3, result);
+		_builder.reset();
 	
 		result = _builder.selectAll(TEST_TABLE)
 			.where("att1", QueryBuilder.WhereOp.WHERE_GT, "placeholder")
 			.orWhere("att2", QueryBuilder.WhereOp.WHERE_LT, "placeholder")
 			.build();
 		assertTrueMsg(expected4, result);
+		_builder.reset();
 		
 		result = _builder.selectAll(TEST_TABLE)
 			.where("att1", QueryBuilder.WhereOp.WHERE_LIKE, "placeholder")
 			.build();
 		assertTrueMsg(expected5, result);
+		_builder.reset();
 		
 		result = _builder.selectAll(TEST_TABLE)
 			.where("att1", QueryBuilder.WhereOp.WHERE_GT, "placeholder")
@@ -94,6 +98,15 @@ public class QueryBuilderTest{
 			.orWhere("att3", QueryBuilder.WhereOp.WHERE_LE, "placeholder")
 			.build();
 		assertTrueMsg(expected6, result);
+		_builder.reset();
+	}
+	
+	@Test
+	public void modelQueryTest(){
+		String attributes[] = {};
+		String expected = "SELECT * FROM Users WHERE att1=? ";
+		String result = new UserModel().select(attributes).where("att1", "placeholder").build();
+		assertTrueMsg(expected, result);
 	}
 	
 	@Test

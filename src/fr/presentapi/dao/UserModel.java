@@ -6,6 +6,7 @@
  */
 package fr.presentapi.dao;
 
+import fr.presentapi.querybuilder.QueryBuilder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,14 +17,12 @@ public class UserModel extends Model<User> {
 
     public static final String TABLE = "Users";
 
-    private final Connection _connexion;
-
     public UserModel() {
-        _connexion = DbConnection.getConnection();
-    }
+		super();
+	}
 	
 	public UserModel(Connection conn){
-		_connexion = conn;
+		super(conn);
 	}
 	
 	@Override
@@ -39,7 +38,7 @@ public class UserModel extends Model<User> {
                 + "VALUES(?, ?, ?, ?, ?)";
 
         try {
-            PreparedStatement stmt = _connexion.prepareStatement(query);
+            PreparedStatement stmt = _conn.prepareStatement(query);
             stmt.setString(1, user.getFName());
             stmt.setString(2, user.getLName());
             stmt.setString(3, user.getMail());
@@ -51,7 +50,7 @@ public class UserModel extends Model<User> {
                 return false;
             }
 
-            _connexion.commit();
+            _conn.commit();
         } catch (SQLException e) {
             System.err.println("UserModel.java(SQLException): " + e.getMessage());
             success = false;
@@ -65,14 +64,14 @@ public class UserModel extends Model<User> {
         String query = "DELETE FROM " + TABLE + " WHERE uid = ?";
 
         try {
-            PreparedStatement stmt = _connexion.prepareStatement(query);
+            PreparedStatement stmt = _conn.prepareStatement(query);
             stmt.setLong(1, uid);
             if (stmt.executeUpdate() == 0) {
                 System.err.println("Error executing query: " + query);
                 return false;
             }
 
-            _connexion.commit();
+            _conn.commit();
         } catch (SQLException e) {
             System.err.println("UserModel.java(SQLException): " + e.getMessage());
             success = false;
@@ -85,7 +84,7 @@ public class UserModel extends Model<User> {
     public boolean exists(Object pk) {
         String query = "SELECT 1 FROM " + UserModel.TABLE + " WHERE uid = ?";
         try {
-            PreparedStatement stmt = _connexion.prepareStatement(query);
+            PreparedStatement stmt = _conn.prepareStatement(query);
             stmt.setLong(1, (Long) pk);
             if (!stmt.execute()) {
                 System.err.println("UserModel.java(Error executing query: " + query);
