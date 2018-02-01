@@ -26,7 +26,7 @@ public class ReportPresence {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response answerCall(String reception) {
         JSONObject jsonReception = new JSONObject(reception);
-        int userId = jsonReception.getJSONObject("data").getInt("id");
+        int userId = Integer.parseInt(jsonReception.getJSONObject("data").getString("id"));
         String codeSent = jsonReception.getJSONObject("data").getString("code");
 
         UserModel user = new UserModel();
@@ -38,6 +38,9 @@ public class ReportPresence {
         if (!codeM.exists(codeSent)) {
             return Response.status(400).entity(new JSONObject("{\"message\": \"No such code\"}").toString()).build();
         }
-        return Response.status(200).entity(new JSONObject("{\"message\": \"You're here!\"}").toString()).build();
+		// TODO: add user to present table
+		
+		JSONObject response = new JSONObject().put("data", new JSONObject().put("message", "You're here!"));
+        return Response.status(200).entity(response.toString()).build();
     }
 }

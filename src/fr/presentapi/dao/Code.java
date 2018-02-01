@@ -8,7 +8,10 @@ package fr.presentapi.dao;
 
 
 public class Code {
-    public static int DEFAULT_DURATION = -1;
+    public static final int DEFAULT_DURATION = -1;
+	public static final int MIN_DURATION = 60;
+	public static final int MAX_DURATION = 604800;
+	
     private String _code;
     private String _creation; //timestamp
     private int _duration;
