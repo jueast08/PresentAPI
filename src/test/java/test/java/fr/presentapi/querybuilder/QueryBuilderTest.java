@@ -14,16 +14,26 @@ import fr.presentapi.dao.UserModel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
+/* @TODO: join between tables */
 public class QueryBuilderTest{
+	private Connection _conn;
 	private static final String TEST_TABLE = "TestTable";
 	private QueryBuilder _builder;
 	
 	@Before
-	public void setup(){
-		_builder = new QueryBuilder(new UserModel());
+	public void setup() throws SQLException{
+		_conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/presentdb", "testuser", "password");
+		_builder = new QueryBuilder(new UserModel(_conn));
+	}
+	
+	@After
+	public void cleanup() throws SQLException{
+		_conn.close();
 	}
 	
 	private void assertTrueMsg(String expected, String got){
@@ -105,16 +115,14 @@ public class QueryBuilderTest{
 	public void modelQueryTest(){
 		String attributes[] = {};
 		String expected = "SELECT * FROM Users WHERE att1=? ";
-		String result = new UserModel().select(attributes).where("att1", "placeholder").build();
+		String result = new UserModel(_conn).select(attributes).where("att1", "placeholder").build();
 		assertTrueMsg(expected, result);
 	}
 	
 	@Test
 	public void databaseTest() throws SQLException{
 		String attributes[] = {};
-		Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/presentdb", "testuser", "password");
-		UserModel model = new UserModel(conn);
+		UserModel model = new UserModel(_conn);
 		model.select(attributes);
-		conn.close();
 	}
 }

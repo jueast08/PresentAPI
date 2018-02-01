@@ -48,7 +48,7 @@ public class UserModelTest extends JerseyTest{
 	@Test
 	public void testInsert(){
 		User u = new User("bruce", "wayne", "bruce@batman.com", "1234567890", 1L);
-		//_model.insert(u);
+		_model.insert(u);
 		// do delete
 	}
 }

@@ -25,7 +25,7 @@ public final class DbConnection {
         if (instance == null) {
 			try {
 				Context ctxt = new InitialContext();
-				DataSource ds = (DataSource)ctxt.lookup("java:comp/env/jdbc/database");
+				DataSource ds = (DataSource)ctxt.lookup("java:comp/env/jdbc/database_psql");
 				if(ds == null){
 					Logger.getLogger("DbConnection.java").log(Level.SEVERE, "Can't connect to database");
 				}

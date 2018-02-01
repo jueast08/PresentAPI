@@ -70,13 +70,6 @@ public abstract class Model<T>{
 					System.out.println(">>> String");
 					stmt.setString(i + 1, (String)p.right());
 				}
-				/*
-				if(pair.right().equals(Long.class)){
-					stmt.setLong(i + 1, (Long) pair.left());
-				} else{
-					stmt.setString(i + 1, (String) pair.left());
-				}
-				*/
 			}
 			System.out.println("Full query : " + stmt);
 			queryBuilder.reset();
@@ -84,7 +77,6 @@ public abstract class Model<T>{
 		} catch(SQLException e){
 			Logger.getLogger(Model.class.getName()).log(Level.SEVERE, e.getMessage(), e);
 		}
-		System.out.println("Query >>> " + queryBuilder.build());
 		queryBuilder.reset();
 		return null;
 	}

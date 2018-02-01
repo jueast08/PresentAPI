@@ -67,7 +67,7 @@ public class UserModel extends Model<User> {
             PreparedStatement stmt = _conn.prepareStatement(query);
             stmt.setLong(1, uid);
             if (stmt.executeUpdate() == 0) {
-                System.err.println("Error executing query: " + query);
+                System.err.println("UserModel.java(Error executing query): " + query);
                 return false;
             }
 
