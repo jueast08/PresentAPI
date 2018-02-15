@@ -5,6 +5,7 @@
  */
 package fr.presentapi.rest;
 
+import fr.presentapi.dao.DbConnection;
 import fr.presentapi.dao.UserModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +19,9 @@ public class Test{
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String test() throws SQLException{
+		DbConnection.getConnection();
+		return "bah";
+		/*
 		UserModel model = new UserModel();
 		String[] att = {};
 		ResultSet rs = model.select(att).where("firstname", "smith").request();
@@ -28,5 +32,6 @@ public class Test{
 			return "No result!";
 		}
 		return rs.getString("lastname");
+*/
 	}
 }
