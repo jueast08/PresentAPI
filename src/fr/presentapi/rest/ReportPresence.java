@@ -9,10 +9,8 @@ package fr.presentapi.rest;
 import fr.presentapi.dao.CodeModel;
 import fr.presentapi.dao.UserModel;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,9 +36,9 @@ public class ReportPresence {
         if (!codeM.exists(codeSent)) {
             return Response.status(400).entity(new JSONObject("{\"message\": \"No such code\"}").toString()).build();
         }
-		// TODO: add user to present table
-		
-		JSONObject response = new JSONObject().put("data", new JSONObject().put("message", "You're here!"));
+        // TODO: add user to present table
+
+        JSONObject response = new JSONObject().put("data", new JSONObject().put("message", "You're here!"));
         return Response.status(200).entity(response.toString()).build();
     }
 }
