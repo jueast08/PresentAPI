@@ -29,6 +29,7 @@ CREATE TABLE Users(
     firstname VARCHAR(128) NOT NULL,
     lastname VARCHAR(128) NOT NULL,
     mail VARCHAR(128) NOT NULL,
+    imei VARCHAR(15) NOT NULL,
     salt VARCHAR(10) DEFAULT '0',
     statusId INTEGER NOT NULL,
 

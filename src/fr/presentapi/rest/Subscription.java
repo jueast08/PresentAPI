@@ -28,13 +28,18 @@ public class Subscription {
         String firstname = jsonReception.getJSONObject("data").getString("firstname");
         String lastname = jsonReception.getJSONObject("data").getString("lasname");
         String mail = jsonReception.getJSONObject("data").getString("mail");
+        String imei = jsonReception.getJSONObject("data").getString("imei");
+        // user a ajouter dans la base ? 
 
         UserModel user = new UserModel();
         if (!user.exists(userId)) {
             return Response.status(400).entity(new JSONObject("{\"message\": \"No such user\"}").toString()).build();
         }
-
+        // vérifier la correspondace de l'imei au moment de la conenction ? 
         JSONObject response = new JSONObject().put("data", new JSONObject().put("message", "Welcome"));
         return Response.status(200).entity(response.toString()).build();
+        
+        // récupérer imei du téléphone ( format de 15 chiffres)
+    // android.telephony.TelephonyManager.getDeviceId().
     }
 }
