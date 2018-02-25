@@ -59,7 +59,6 @@ present.db
 
 # Netbeans IDE specific
 nb-configuration.xml
-WebContent/META-INF/context.xml
 
 # Maven
 nbactions.xml
