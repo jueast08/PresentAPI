@@ -34,16 +34,17 @@ public class UserModel extends Model<User> {
     public boolean insert(User user) {
         boolean success = true;
         String query = "INSERT INTO " + TABLE
-                + "(firstname, lastname, mail, salt, statusId) "
-                + "VALUES(?, ?, ?, ?, ?)";
+                + "(firstname, lastname, mail, imei, salt, statusId) "
+                + "VALUES(?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement stmt = _conn.prepareStatement(query);
             stmt.setString(1, user.getFName());
             stmt.setString(2, user.getLName());
             stmt.setString(3, user.getMail());
-            stmt.setString(4, user.getSalt());
-            stmt.setLong(5, user.getStatusId());
+            stmt.setString(4, user.getImei());
+            stmt.setString(5, user.getSalt());
+            stmt.setLong(6, user.getStatusId());
 			
             if (stmt.executeUpdate() == 0) {
                 System.err.println("UserModel.java(Error executing query): " + query);
