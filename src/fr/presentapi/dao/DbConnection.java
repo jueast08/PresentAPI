@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 
 public final class DbConnection{
 
-	private final static String DEFAULT_DRIVER = "mysql";
+	private final static String DEFAULT_DRIVER = "sqlite";
 
 	private DbConnection(){
 	}
@@ -45,7 +45,8 @@ public final class DbConnection{
 		} catch(IOException e){
 			System.err.println(e.getMessage());
 		}
-		return prop.getProperty("DatabaseDriver", DEFAULT_DRIVER);
+		return DEFAULT_DRIVER;
+		// return prop.getProperty("DatabaseDriver", DEFAULT_DRIVER);
 	}
 
 	public static synchronized Connection getConnection(){
@@ -55,6 +56,7 @@ public final class DbConnection{
 			System.err.println(drivername);
 			try{
 				Context ctxt = new InitialContext();
+				System.err.println(">>> database_" + drivername);
 				DataSource ds = (DataSource) ctxt.lookup("java:comp/env/jdbc/database_" + drivername);
 				if(ds == null){
 					Logger.getLogger("DbConnection.java").log(Level.SEVERE, "Can't connect to database");
